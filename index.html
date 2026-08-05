@@ -2014,17 +2014,6 @@
             return 'x'.repeat(local.length) + domain;
         }
 
-        // Masks the email-derived prefix of a StudentID before it's shown anywhere.
-        // StudentIDs look like F20260617-A3F1 — the part before the dash is the
-        // email's local part, so it gets fully masked the same way.
-        function maskStudentId(id) {
-            const parts = String(id).split('-');
-            if (parts.length < 2) return id;
-            const prefix = parts[0];
-            const rest = parts.slice(1).join('-');
-            return 'x'.repeat(prefix.length) + '-' + rest;
-        }
-
         // Any raw email accidentally present in a message (e.g. from a backend
         // error string) gets masked before it ever reaches a toast or the DOM.
         function scrubEmails(text) {
@@ -2188,8 +2177,22 @@
                 if (f.type === 'select') {
                     const select = document.createElement('select');
                     select.dataset.customField = f.key;
-                    select.innerHTML = `<option value="">Select ${f.label}</option>` +
-                        (f.options || []).map(o => `<option value="${o.replace(/"/g, '&quot;')}">${o}</option>`).join('');
+                    // Built via createElement/textContent, not innerHTML —
+                    // f.label and each option are admin-typed text (from
+                    // the Admin > Register form screen), and interpolating
+                    // them into an HTML string would execute anything
+                    // shaped like a tag. Same rule this file applies to
+                    // every other piece of user/admin-entered text.
+                    const placeholderOpt = document.createElement('option');
+                    placeholderOpt.value = '';
+                    placeholderOpt.textContent = `Select ${f.label}`;
+                    select.appendChild(placeholderOpt);
+                    (f.options || []).forEach(o => {
+                        const opt = document.createElement('option');
+                        opt.value = o;
+                        opt.textContent = o;
+                        select.appendChild(opt);
+                    });
                     wrap.appendChild(select);
                 } else {
                     const input = document.createElement('input');
@@ -2270,6 +2273,7 @@
             const type = document.getElementById('newFieldType').value;
             const optionsRaw = document.getElementById('newFieldOptions').value.trim();
             const statusEl = document.getElementById('adminFormFieldsStatus');
+            const btn = document.getElementById('adminAddFieldBtn');
             if (!label) { toast('Give the field a label first.', 'error'); return; }
             if (type === 'select' && !optionsRaw) { toast('Add at least one dropdown option.', 'error'); return; }
 
@@ -2280,8 +2284,10 @@
                 options: type === 'select' ? optionsRaw.split(',').map(s => s.trim()).filter(Boolean) : []
             };
             const updated = formFieldsConfig.concat([newField]);
+            btn.disabled = true;
             statusEl.innerHTML = '<span class="spinner"></span>saving...';
             const r = await api('adminSetFormConfig', { requesterId: me.studentId, fields: updated });
+            btn.disabled = false;
             statusEl.textContent = '';
             if (r.error) return;
 
@@ -3713,7 +3719,7 @@
 
         function renderTimetable() {
             const ttGridEl = document.getElementById('ttGrid');
-            if (ttGridEl) renderTimetableInto(ttGridEl, extracted, c => openMatches(c.course, c.section, c.type, c.time));
+            if (ttGridEl) renderTimetableInto(ttGridEl, extracted, c => openMatches(c.course, c.section, c.type, c.time, c.day));
 
             const dashTtGridEl = document.getElementById('dashTtGrid');
             if (dashTtGridEl) renderTimetableInto(dashTtGridEl, extracted, selectDashboardClass);
@@ -3737,7 +3743,7 @@
             titleEl.textContent = `${c.course} — ${c.section}`;
             listEl.innerHTML = '<span class="spinner"></span>looking...';
 
-            const r = await api('getMatches', { course: c.course, time: c.time, type: c.type, excludeStudentId: me.studentId });
+            const r = await api('getMatches', { course: c.course, time: c.time, type: c.type, day: c.day, excludeStudentId: me.studentId });
             listEl.innerHTML = '';
             if (r.error) {
                 const note = document.createElement('div');
@@ -3790,13 +3796,13 @@
         // reliably, and two DIFFERENT sections of the same course don't
         // normally run at the exact same time — so it's a more robust
         // signal for "is this actually the same class" than section is.
-        async function openMatches(course, section, type, time) {
+        async function openMatches(course, section, type, time, day) {
             document.getElementById('matchTitle').textContent = `${course} — ${section}`;
             const listEl = document.getElementById('matchList');
             listEl.innerHTML = '<span class="spinner"></span>looking...';
             document.getElementById('matchModal').classList.remove('hidden');
 
-            const r = await api('getMatches', { course, time, type, excludeStudentId: me.studentId });
+            const r = await api('getMatches', { course, time, type, day, excludeStudentId: me.studentId });
             if (r.error) {
                 listEl.innerHTML = '<div class="empty-note">Couldn\'t load classmates right now. Close this and try again.</div>';
                 return;
@@ -3938,8 +3944,10 @@
                             approveBtn.style.padding = '5px 10px';
                             approveBtn.style.fontSize = '12px';
                             approveBtn.onclick = async () => {
+                                approveBtn.disabled = true;
+                                rejectBtn.disabled = true;
                                 const r = await api('respondToTicket', { ticketId: tk.ticketId, requesterId: me.studentId, status: 'approved' });
-                                if (r.error) return;
+                                if (r.error) { approveBtn.disabled = false; rejectBtn.disabled = false; return; }
                                 toast(`Approved ${tk.name}.`, 'success');
                                 if (onRefresh) onRefresh();
                             };
@@ -3949,8 +3957,10 @@
                             rejectBtn.style.padding = '5px 10px';
                             rejectBtn.style.fontSize = '12px';
                             rejectBtn.onclick = async () => {
+                                approveBtn.disabled = true;
+                                rejectBtn.disabled = true;
                                 const r = await api('respondToTicket', { ticketId: tk.ticketId, requesterId: me.studentId, status: 'rejected' });
-                                if (r.error) return;
+                                if (r.error) { approveBtn.disabled = false; rejectBtn.disabled = false; return; }
                                 toast(`Rejected ${tk.name}.`, 'info');
                                 if (onRefresh) onRefresh();
                             };
@@ -4546,7 +4556,7 @@
 
         async function loadPostComments(postId, listEl) {
             listEl.innerHTML = '<div class="sub" style="font-size:12px;"><span class="spinner"></span>loading comments...</div>';
-            const r = await api('listComments', { postId });
+            const r = await api('listComments', { postId, requesterId: me.studentId });
             listEl.innerHTML = '';
             if (r.error || !r.comments || r.comments.length === 0) {
                 const note = document.createElement('div');
@@ -4581,6 +4591,24 @@
                 row.appendChild(author);
                 row.appendChild(textNode);
                 row.appendChild(timeEl);
+
+                // Your own comments get a small delete link — deletes
+                // just that one comment, not the whole post.
+                if (c.isOwn) {
+                    const delLink = document.createElement('span');
+                    delLink.textContent = ' · Delete';
+                    delLink.style.cursor = 'pointer';
+                    delLink.style.color = 'var(--muted)';
+                    delLink.style.fontSize = '11.5px';
+                    delLink.onclick = async () => {
+                        if (!confirm('Delete this comment?')) return;
+                        const r2 = await api('deleteComment', { commentId: c.commentId, requesterId: me.studentId });
+                        if (r2.error) return;
+                        loadPostComments(postId, listEl);
+                    };
+                    timeEl.appendChild(delLink);
+                }
+
                 listEl.appendChild(row);
             });
         }
@@ -4838,7 +4866,17 @@
                 return;
             }
             r.posts.forEach(p => {
-                const card = renderPostCard(p);
+                // This section is about managing favorites specifically —
+                // isOwn is forced false here so renderPostCard's own
+                // self-delete button never appears. Without this, isOwn
+                // could be true (listFavorites marks it true when the
+                // favorited post's author IS this student), which would
+                // show a "Delete post" button that always fails: it'd send
+                // requesterId 'ADMIN', which never matches the real post
+                // author, so the self-service delete would reject it every
+                // time. Deleting the actual post belongs on the Admin >
+                // Posts page (adminDeletePost), not here.
+                const card = renderPostCard({ ...p, isOwn: false });
                 const removeBtn = document.createElement('button');
                 removeBtn.className = 'btn-danger';
                 removeBtn.style.marginTop = '8px';
