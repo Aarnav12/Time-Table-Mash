@@ -1611,6 +1611,72 @@
                             </div>
                             <div class="btn-row"><button id="saveProfileBtn">Save profile</button></div>
                             <div class="status" id="profileStatus"></div>
+
+                            <label style="margin-top:26px;">Academic details</label>
+                            <div class="sub" style="margin-bottom:10px;">
+                                Changing Program also updates your BITS ID to match, since the program code is
+                                embedded in it — moved to a new year? Changed branch? Update it here.
+                            </div>
+                            <div class="form-grid">
+                                <div><label>Program</label>
+                                    <select id="idProgram">
+                                        <option value="A1">A1 — B.E. Chemical</option>
+                                        <option value="A2">A2 — B.E. Civil</option>
+                                        <option value="A3">A3 — B.E. Electrical &amp; Electronics</option>
+                                        <option value="A4">A4 — B.E. Mechanical</option>
+                                        <option value="A5">A5 — B. Pharm.</option>
+                                        <option value="A7">A7 — B.E. Computer Science</option>
+                                        <option value="A8">A8 — B.E. Electronics &amp; Instrumentation</option>
+                                        <option value="AA">AA — B.E. Electronics &amp; Communication</option>
+                                        <option value="AB">AB — B.E. Manufacturing</option>
+                                        <option value="AD">AD — B.E. Mathematics and Computing</option>
+                                        <option value="AJ">AJ — B.E. Environmental and Sustainability Engg.</option>
+                                        <option value="AL">AL — B.E. Pharmaceutical Engg.</option>
+                                        <option value="B1">B1 — M.Sc. Biological Sciences</option>
+                                        <option value="B2">B2 — M.Sc. Chemistry</option>
+                                        <option value="B3">B3 — M.Sc. Economics</option>
+                                        <option value="B4">B4 — M.Sc. Mathematics</option>
+                                        <option value="B5">B5 — M.Sc. Physics</option>
+                                        <option value="B7">B7 — M.Sc. Semiconductor and Nanoscience</option>
+                                    </select>
+                                </div>
+                                <div><label>Year / Semester</label>
+                                    <select id="idSemester">
+                                        <option value="1st Year - Semester 1" data-year="1">1st Year (Semester 1)</option>
+                                        <option value="1st Year - Semester 2" data-year="1">1st Year (Semester 2)</option>
+                                        <option value="2nd Year - Semester 3" data-year="2">2nd Year (Semester 3)</option>
+                                        <option value="2nd Year - Semester 4" data-year="2">2nd Year (Semester 4)</option>
+                                        <option value="3rd Year - Semester 5" data-year="3">3rd Year (Semester 5)</option>
+                                        <option value="3rd Year - Semester 6" data-year="3">3rd Year (Semester 6)</option>
+                                        <option value="4th Year - Semester 7" data-year="4">4th Year (Semester 7)</option>
+                                        <option value="4th Year - Semester 8" data-year="4">4th Year (Semester 8)</option>
+                                        <option value="5th Year - Semester 9" data-year="5">5th Year (Semester 9)</option>
+                                        <option value="5th Year - Semester 10" data-year="5">5th Year (Semester 10)</option>
+                                    </select>
+                                </div>
+                                <div class="full hidden" id="idBeProgramWrap"><label>B.E. Program (for your dual degree)</label>
+                                    <select id="idBeProgram">
+                                        <option value="">Select B.E. program</option>
+                                        <option value="A1">A1 — B.E. Chemical</option>
+                                        <option value="A2">A2 — B.E. Civil</option>
+                                        <option value="A3">A3 — B.E. Electrical &amp; Electronics</option>
+                                        <option value="A4">A4 — B.E. Mechanical</option>
+                                        <option value="A5">A5 — B. Pharm.</option>
+                                        <option value="A7">A7 — B.E. Computer Science</option>
+                                        <option value="A8">A8 — B.E. Electronics &amp; Instrumentation</option>
+                                        <option value="AA">AA — B.E. Electronics &amp; Communication</option>
+                                        <option value="AB">AB — B.E. Manufacturing</option>
+                                        <option value="AD">AD — B.E. Mathematics and Computing</option>
+                                        <option value="AJ">AJ — B.E. Environmental and Sustainability Engg.</option>
+                                        <option value="AL">AL — B.E. Pharmaceutical Engg.</option>
+                                    </select>
+                                </div>
+                                <div class="full"><label>BITS ID</label>
+                                    <input type="text" id="idBitsIdPreview" readonly></div>
+                            </div>
+                            <div class="btn-row"><button id="saveAcademicBtn">Save changes</button></div>
+                            <div class="status" id="idChangeRequestStatus"></div>
+
                             <label style="margin-top:26px;">Timetable</label>
                             <div class="sub" style="margin-bottom:10px;">Editing your timetable happens here — the Timetable tab is just for viewing it.</div>
                             <div class="btn-row"><button id="reuploadBtn" class="ghost">Upload / replace timetable</button></div>
@@ -1742,6 +1808,27 @@
                                     <div class="admin-stat-card"><div class="admin-stat-value" id="statTotalFeedback">—</div><div class="admin-stat-label">Total feedback</div></div>
                                 </div>
                                 <div class="sub" id="adminOverviewNote" style="margin-top:14px; font-size:12.5px;"></div>
+                            </div>
+
+                            <div class="admin-section" style="margin-top:26px; padding-top:20px; border-top:1px solid var(--line);">
+                                <div class="admin-section-head">
+                                    <span class="admin-section-title">Recent admin login attempts</span>
+                                    <button id="adminAttemptsRefreshBtn" class="ghost">Refresh</button>
+                                </div>
+                                <div class="sub" style="font-size:12px; margin:4px 0 12px;">
+                                    Every time the verification code is submitted on the login screen — right or
+                                    wrong — it's logged here, since that check happens entirely in the browser and
+                                    would otherwise leave no trace at all. A correct code also requires location
+                                    access before Admin actually opens — coordinates only appear on a row once
+                                    location was granted, since that's what access was actually contingent on.
+                                </div>
+                                <div class="table-scroll">
+                                    <table>
+                                        <thead><tr><th>When</th><th>Code entered</th><th>Result</th><th>IP</th><th>Device</th><th>Screen</th><th>Location</th></tr></thead>
+                                        <tbody id="adminAttemptsBody"></tbody>
+                                    </table>
+                                </div>
+                                <div class="admin-empty-state hidden" id="adminAttemptsEmpty">No attempts logged yet.</div>
                             </div>
                         </div>
                     </div>
@@ -1974,6 +2061,26 @@
 
     <script>
         // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE:
+        // Right-click and common DevTools/view-source shortcuts are
+        // blocked below as a deterrent against casual snooping — NOT as
+        // real security. Anyone can still open DevTools via the browser's
+        // own menu, or view this exact source via view-source: typed into
+        // the address bar, or just download the raw file directly (this
+        // page is hosted on GitHub Pages, publicly fetchable). Nothing
+        // that actually matters for safety in this app depends on this
+        // block — every ownership check, every admin check, every write
+        // lock is enforced server-side in Code.gs regardless of whether
+        // someone can see this file's source.
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+        document.addEventListener('keydown', (e) => {
+            const key = e.key.toUpperCase();
+            const blockedCombo =
+                key === 'F12' ||
+                ((e.ctrlKey || e.metaKey) && e.shiftKey && (key === 'I' || key === 'J' || key === 'C')) ||
+                ((e.ctrlKey || e.metaKey) && key === 'U');
+            if (blockedCombo) e.preventDefault();
+        });
+
         const API_URL = "https://script.google.com/macros/s/AKfycbw_K1fyt63A7pmDfaT4fjM9E1VesihUej_w8nwoIIOsAMXugIvH_kcgUIS3KeLKWl74yA/exec";
 
         let me = { studentId: null, name: null, program: '', semester: '', bitsId: '', beProgram: '', club: '', sport: '', fieldOfInterest: '', timetableVisibility: 'private' };
@@ -2147,18 +2254,24 @@
 
         // For M.Sc. dual-degree students (program codes B1-B7) who've reached
         // 2nd year or above, show an extra dropdown to pick their B.E. branch.
-        function beProgramIsNeeded() {
-            const program = document.getElementById('regProgram').value;
-            const semSel = document.getElementById('regSemester');
+        function beProgramIsNeeded(programSelId, semesterSelId) {
+            const program = document.getElementById(programSelId).value;
+            const semSel = document.getElementById(semesterSelId);
             const year = Number(semSel.options[semSel.selectedIndex]?.dataset.year || 0);
             return /^B[1-7]$/.test(program) && year >= 2;
         }
 
         function refreshBeProgramVisibility() {
-            document.getElementById('beProgramWrap').classList.toggle('hidden', !beProgramIsNeeded());
+            document.getElementById('beProgramWrap').classList.toggle('hidden', !beProgramIsNeeded('regProgram', 'regSemester'));
         }
         document.getElementById('regProgram').addEventListener('change', refreshBeProgramVisibility);
         document.getElementById('regSemester').addEventListener('change', refreshBeProgramVisibility);
+
+        function refreshIdBeProgramVisibility() {
+            document.getElementById('idBeProgramWrap').classList.toggle('hidden', !beProgramIsNeeded('idProgram', 'idSemester'));
+        }
+        document.getElementById('idProgram').addEventListener('change', refreshIdBeProgramVisibility);
+        document.getElementById('idSemester').addEventListener('change', refreshIdBeProgramVisibility);
 
         // ---- Custom registration fields (admin-configurable) ----
         // Stored server-side via getFormConfig (public, read by everyone
@@ -2245,7 +2358,7 @@
                 delBtn.onclick = async () => {
                     if (!confirm(`Remove "${f.label}" from the register form?`)) return;
                     const updated = formFieldsConfig.filter((_, idx) => idx !== i);
-                    const r = await api('adminSetFormConfig', { requesterId: me.studentId, fields: updated });
+                    const r = await api('adminSetFormConfig', { adminToken, fields: updated });
                     if (r.error) return;
                     formFieldsConfig = updated;
                     renderAdminFormFieldsList();
@@ -2286,7 +2399,7 @@
             const updated = formFieldsConfig.concat([newField]);
             btn.disabled = true;
             statusEl.innerHTML = '<span class="spinner"></span>saving...';
-            const r = await api('adminSetFormConfig', { requesterId: me.studentId, fields: updated });
+            const r = await api('adminSetFormConfig', { adminToken, fields: updated });
             btn.disabled = false;
             statusEl.textContent = '';
             if (r.error) return;
@@ -2307,7 +2420,7 @@
             const semester = document.getElementById('regSemester').value;
             const program = document.getElementById('regProgram').value;
             const campus = document.getElementById('regCampus').value;
-            const needsBeProgram = beProgramIsNeeded();
+            const needsBeProgram = beProgramIsNeeded('regProgram', 'regSemester');
             const beProgram = needsBeProgram ? document.getElementById('regBeProgram').value : '';
             const password = document.getElementById('regPassword').value;
             const password2 = document.getElementById('regPassword2').value;
@@ -2431,13 +2544,19 @@
             const statusEl = document.getElementById('loginStatus');
             errEl.textContent = '';
 
-            // Typing "admin" in BOTH fields reveals the admin verification
-            // code box instead of attempting a normal login — see the OTP
-            // handler below for what happens after the code is entered.
-            if (bitsId.toLowerCase() === 'admin' && password.toLowerCase() === 'admin') {
-                document.getElementById('adminOtpPanel').classList.remove('hidden');
-                document.getElementById('adminOtpInput').focus();
-                return;
+            // Checked server-side against the Admin sheet — real,
+            // configurable credentials, not a fixed phrase anyone reading
+            // this file could see. Whatever was typed here also gets sent
+            // to the actual verification later (verifyAdminAccess), which
+            // independently re-checks it — this call only decides whether
+            // to reveal the code+location box at all.
+            if (bitsId && password) {
+                const credCheck = await api('checkAdminCredentials', { bitsId, password }, true);
+                if (credCheck.match) {
+                    document.getElementById('adminOtpPanel').classList.remove('hidden');
+                    document.getElementById('adminOtpInput').focus();
+                    return;
+                }
             }
 
             // A BITS ID looks like "2026ABPS0617P": year(4) + program(2) +
@@ -2487,16 +2606,13 @@
             }
         };
 
-        // The admin verification code is today's date as DDMMYY, computed
-        // live — e.g. August 5, 2026 -> "050826" — so it changes every day
-        // rather than being a fixed password sitting in the page source.
-        function todayAdminCode() {
-            const d = new Date();
-            const dd = String(d.getDate()).padStart(2, '0');
-            const mm = String(d.getMonth() + 1).padStart(2, '0');
-            const yy = String(d.getFullYear()).slice(-2);
-            return `${dd}${mm}${yy}`;
-        }
+        // The admin verification code is today's date as DDMMYY, checked
+        // SERVER-SIDE by verifyAdminAccess in Code.gs (never trusted from
+        // a client-reported comparison) — this file no longer computes or
+        // checks it at all, that responsibility lives entirely on the
+        // backend now. See adminToken below for what a successful
+        // verification actually grants.
+        let adminToken = null;
 
         // The moment either field stops being exactly "admin" — a
         // character typed, deleted, pasted over — the verification code
@@ -2504,12 +2620,15 @@
         // of Login. Prevents it lingering visible if someone edits either
         // field after triggering it, and clears whatever code was
         // half-typed so a stale one can't be resubmitted after re-opening.
+        // Hides the code+location box the moment either field is touched
+        // again after it appeared — can't re-verify credentials against
+        // the server on every keystroke (too chatty, and there's no
+        // client-side copy of the credentials to check against anymore,
+        // which is the whole point). Editing either field means starting
+        // over: click Login again to re-check against the Admin sheet.
         function syncAdminOtpVisibility() {
-            const bitsId = document.getElementById('loginBitsId').value.trim().toLowerCase();
-            const password = document.getElementById('loginPassword').value.toLowerCase();
             const otpPanel = document.getElementById('adminOtpPanel');
-            const stillMatches = bitsId === 'admin' && password === 'admin';
-            if (!stillMatches && !otpPanel.classList.contains('hidden')) {
+            if (!otpPanel.classList.contains('hidden')) {
                 otpPanel.classList.add('hidden');
                 document.getElementById('adminOtpInput').value = '';
             }
@@ -2517,19 +2636,118 @@
         document.getElementById('loginBitsId').addEventListener('input', syncAdminOtpVisibility);
         document.getElementById('loginPassword').addEventListener('input', syncAdminOtpVisibility);
 
-        document.getElementById('adminOtpSubmitBtn').onclick = () => {
+        // Wraps the browser's geolocation prompt in a Promise. If the
+        // person has already explicitly denied location for this site,
+        // this rejects immediately WITHOUT showing the native prompt
+        // again — that's the browser's own security behavior, not
+        // something any website's code can override. They'd need to
+        // manually re-enable location for this site in their browser's
+        // own settings to be asked again.
+        function requestLocationCoordinates() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) { reject(new Error('Geolocation not supported by this browser.')); return; }
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => resolve({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
+                    (err) => reject(err),
+                    { timeout: 10000, maximumAge: 0 }
+                );
+            });
+        }
+
+        // Collects self-reported device context to send alongside the
+        // verification request — IP via a third-party lookup (Apps Script
+        // has no way to see a caller's real IP itself), device type/OS
+        // parsed from the user agent, screen resolution. The IP lookup
+        // has its own short timeout and is best-effort: if it's slow,
+        // blocked, or fails, verification proceeds anyway with that one
+        // field blank — it never holds up the actual access decision.
+        async function collectDeviceContext() {
+            let ipAddress = '';
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 4000);
+                const res = await fetch('https://api.ipify.org?format=json', { signal: controller.signal });
+                clearTimeout(timeout);
+                const data = await res.json();
+                ipAddress = data.ip || '';
+            } catch (e) {
+                ipAddress = '';
+            }
+
+            const ua = navigator.userAgent;
+            let deviceType = 'Desktop';
+            if (/Tablet|iPad/i.test(ua)) deviceType = 'Tablet';
+            else if (/Mobi|Android/i.test(ua)) deviceType = 'Mobile';
+            let osLabel = 'Unknown OS';
+            if (/Windows/i.test(ua)) osLabel = 'Windows';
+            else if (/Mac OS/i.test(ua)) osLabel = 'Mac';
+            else if (/Android/i.test(ua)) osLabel = 'Android';
+            else if (/iPhone|iPad|iOS/i.test(ua)) osLabel = 'iOS';
+            else if (/Linux/i.test(ua)) osLabel = 'Linux';
+
+            return {
+                ipAddress,
+                deviceInfo: `${deviceType} — ${osLabel}`,
+                screenSize: `${window.screen.width}x${window.screen.height}`
+            };
+        }
+
+        document.getElementById('adminOtpSubmitBtn').onclick = async () => {
             const entered = document.getElementById('adminOtpInput').value.trim();
             const errEl = document.getElementById('loginErr');
-            if (entered !== todayAdminCode()) {
-                errEl.textContent = 'Incorrect code.';
+            const btn = document.getElementById('adminOtpSubmitBtn');
+
+            // Location is requested BEFORE calling the backend at all —
+            // still required every time, with no way around it from this
+            // page's own code, same as before. The difference now is that
+            // the CODE itself is also verified server-side in the same
+            // call, rather than compared in this file.
+            btn.disabled = true;
+            errEl.textContent = 'Location access is required to enter Admin — check your browser for a permission prompt...';
+
+            let coords = null;
+            try {
+                coords = await requestLocationCoordinates();
+            } catch (e) {
+                coords = null;
+            }
+
+            if (!coords) {
+                btn.disabled = false;
+                errEl.textContent = 'Location access is required to enter Admin. Please allow location access for this site and try again.';
                 return;
             }
+
+            errEl.textContent = 'Verifying...';
+            const context = await collectDeviceContext();
+
+            const r = await api('verifyAdminAccess', {
+                bitsIdField: document.getElementById('loginBitsId').value.trim(),
+                passwordField: document.getElementById('loginPassword').value,
+                enteredCode: entered,
+                latitude: coords.latitude,
+                longitude: coords.longitude,
+                ipAddress: context.ipAddress,
+                deviceInfo: context.deviceInfo,
+                screenSize: context.screenSize
+            }, true);
+
+            btn.disabled = false;
+
+            if (r.error || !r.token) {
+                errEl.textContent = r.error || 'Verification failed.';
+                return;
+            }
+
             errEl.textContent = '';
-            // No real backend account behind this — it's a client-side
-            // shortcut straight into the Admin screen. studentId 'ADMIN'
-            // is what your Code.gs checks every admin action's requesterId
-            // against (see ADMIN_REQUESTER_IDS there) — this literal value
-            // has to match what's configured server-side.
+            // adminToken is the ONLY thing that grants admin access to any
+            // backend action from here on — it's a random, single-use
+            // session value the server just issued after actually
+            // confirming the code and location above. me.studentId is
+            // still set to the literal 'ADMIN' for display purposes (it
+            // shows up nowhere sensitive), but it carries no authority by
+            // itself anymore — Code.gs never trusts it for anything.
+            adminToken = r.token;
             me = { studentId: 'ADMIN', name: 'Admin', program: '', semester: '', bitsId: 'ADMIN', beProgram: '', club: '', sport: '', fieldOfInterest: '', timetableVisibility: 'private' };
             document.getElementById('adminOtpInput').value = '';
             document.getElementById('adminOtpPanel').classList.add('hidden');
@@ -4260,6 +4478,7 @@
         }
 
         document.getElementById('exitAdminBtn').onclick = () => {
+            adminToken = null;
             document.getElementById('adminShell').classList.add('hidden');
             document.getElementById('stepIndicator').classList.remove('hidden');
             document.getElementById('authCard').classList.remove('hidden');
@@ -4325,6 +4544,14 @@
             const isPublic = me.timetableVisibility === 'public';
             document.getElementById('profVisibilityToggle').checked = isPublic;
             document.getElementById('profVisibilityLabel').textContent = isPublic ? 'Timetable is public' : 'Timetable is private';
+
+            if (me.program) document.getElementById('idProgram').value = me.program;
+            if (me.semester) document.getElementById('idSemester').value = me.semester;
+            refreshIdBeProgramVisibility();
+            if (me.beProgram) document.getElementById('idBeProgram').value = me.beProgram;
+            document.getElementById('idBitsIdPreview').value = me.bitsId || '';
+            document.getElementById('idChangeRequestStatus').textContent = '';
+
             loadOwnPosts();
             loadOwnTrips();
         }
@@ -4380,6 +4607,35 @@
 
             me.club = club; me.sport = sport; me.fieldOfInterest = fieldOfInterest; me.timetableVisibility = timetableVisibility;
             toast('Profile saved.', 'success');
+        };
+
+        document.getElementById('saveAcademicBtn').onclick = async () => {
+            const program = document.getElementById('idProgram').value;
+            const semester = document.getElementById('idSemester').value;
+            const needsBeProgram = beProgramIsNeeded('idProgram', 'idSemester');
+            const beProgram = needsBeProgram ? document.getElementById('idBeProgram').value : '';
+            if (needsBeProgram && !beProgram) {
+                toast('Please select your B.E. program.', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('saveAcademicBtn');
+            const statusEl = document.getElementById('idChangeRequestStatus');
+            btn.disabled = true;
+            statusEl.innerHTML = '<span class="spinner"></span>saving...';
+
+            const r = await api('updateAcademicDetails', { studentId: me.studentId, program, semester, beProgram });
+            btn.disabled = false;
+            statusEl.textContent = '';
+            if (r.error) return;
+
+            me.program = r.program;
+            me.semester = r.semester;
+            me.beProgram = r.beProgram;
+            me.bitsId = r.bitsId;
+            document.getElementById('idBitsIdPreview').value = r.bitsId;
+            document.getElementById('profSelfMeta').textContent = [me.program, me.beProgram, me.semester, me.bitsId].filter(Boolean).join(' · ');
+            toast('Academic details updated.', 'success');
         };
 
         // ---- Post interest ----
@@ -4695,9 +4951,9 @@
             noteEl.textContent = '';
 
             const [studentsR, postsR, feedbackR] = await Promise.all([
-                api('adminListStudents', { requesterId: me.studentId }),
-                api('adminListPosts', { requesterId: me.studentId }),
-                api('adminListFeedback', { requesterId: me.studentId })
+                api('adminListStudents', { adminToken }),
+                api('adminListPosts', { adminToken }),
+                api('adminListFeedback', { adminToken })
             ]);
 
             document.getElementById('statTotalUsers').textContent =
@@ -4721,9 +4977,61 @@
                 document.getElementById('statActiveUsers').textContent = '—';
                 noteEl.textContent = '"Active now" needs your backend\'s adminListStudents to return a lastActive timestamp per student, updated by a heartbeat action — not implemented yet, so this shows as unavailable rather than a guess.';
             }
+
+            loadAdminAttempts();
         }
 
         document.getElementById('adminOverviewRefreshBtn').onclick = loadAdminOverview;
+
+        async function loadAdminAttempts() {
+            const body = document.getElementById('adminAttemptsBody');
+            const emptyEl = document.getElementById('adminAttemptsEmpty');
+            body.innerHTML = '';
+            emptyEl.classList.add('hidden');
+
+            const r = await api('adminListLoginAttempts', { adminToken });
+            if (r.error || !r.attempts || r.attempts.length === 0) {
+                emptyEl.classList.remove('hidden');
+                return;
+            }
+            r.attempts.forEach(a => {
+                const tr = document.createElement('tr');
+                const tdWhen = document.createElement('td');
+                tdWhen.textContent = timeAgo(a.timestamp);
+                const tdCode = document.createElement('td');
+                tdCode.textContent = a.enteredCode;
+                const tdResult = document.createElement('td');
+                tdResult.textContent = a.success ? 'Success' : 'Failed';
+                tdResult.style.color = a.success ? 'var(--amber-deep)' : 'var(--muted)';
+                const tdIp = document.createElement('td');
+                tdIp.textContent = a.ipAddress || '—';
+                const tdDevice = document.createElement('td');
+                tdDevice.textContent = a.deviceInfo || '—';
+                const tdScreen = document.createElement('td');
+                tdScreen.textContent = a.screenSize || '—';
+                const tdLocation = document.createElement('td');
+                if (a.latitude && a.longitude) {
+                    const mapLink = document.createElement('a');
+                    mapLink.href = `https://www.google.com/maps?q=${a.latitude},${a.longitude}`;
+                    mapLink.target = '_blank';
+                    mapLink.rel = 'noopener noreferrer';
+                    mapLink.textContent = 'View on map';
+                    tdLocation.appendChild(mapLink);
+                } else {
+                    tdLocation.textContent = '—';
+                }
+                tr.appendChild(tdWhen);
+                tr.appendChild(tdCode);
+                tr.appendChild(tdResult);
+                tr.appendChild(tdIp);
+                tr.appendChild(tdDevice);
+                tr.appendChild(tdScreen);
+                tr.appendChild(tdLocation);
+                body.appendChild(tr);
+            });
+        }
+
+        document.getElementById('adminAttemptsRefreshBtn').onclick = loadAdminAttempts;
 
         let adminUsersCache = [];
 
@@ -4760,7 +5068,7 @@
                 delBtn.textContent = 'Delete';
                 delBtn.onclick = async () => {
                     if (!confirm(`Permanently delete ${s.name} (${s.bitsId})? This cannot be undone.`)) return;
-                    const r = await api('adminDeleteStudent', { requesterId: me.studentId, studentId: s.studentId });
+                    const r = await api('adminDeleteStudent', { adminToken, studentId: s.studentId });
                     if (r.error) return;
                     toast(`Deleted ${s.name}.`, 'success');
                     loadAdminUsers();
@@ -4786,7 +5094,7 @@
             body.innerHTML = '';
             emptyEl.classList.add('hidden');
 
-            const r = await api('adminListStudents', { requesterId: me.studentId });
+            const r = await api('adminListStudents', { adminToken });
             if (r.error || !r.students || r.students.length === 0) {
                 emptyEl.classList.remove('hidden');
                 return;
@@ -4827,7 +5135,7 @@
             document.getElementById('adminUserTimetableBody').innerHTML = '';
             document.getElementById('adminUserModal').classList.remove('hidden');
 
-            const r = await api('getProfile', { studentId, requesterId: me.studentId });
+            const r = await api('getProfile', { studentId, requesterId: me.studentId, adminToken });
             if (r.error) { document.getElementById('adminUserName').textContent = 'Could not load user'; return; }
 
             document.getElementById('adminUserName').textContent = r.name || '';
@@ -4914,7 +5222,7 @@
             statusEl.innerHTML = '<span class="spinner"></span>saving...';
 
             const payload = {
-                requesterId: me.studentId,
+                adminToken,
                 studentId: adminUserModalTarget,
                 program: document.getElementById('adminEditProgram').value.trim(),
                 semester: document.getElementById('adminEditSemester').value.trim(),
@@ -4937,7 +5245,7 @@
             feed.innerHTML = '';
             emptyEl.classList.add('hidden');
 
-            const r = await api('adminListPosts', { requesterId: me.studentId });
+            const r = await api('adminListPosts', { adminToken });
             if (r.error || !r.posts || r.posts.length === 0) {
                 emptyEl.classList.remove('hidden');
                 return;
@@ -4950,7 +5258,7 @@
                 delBtn.textContent = 'Delete post';
                 delBtn.onclick = async () => {
                     if (!confirm('Delete this post permanently?')) return;
-                    const r2 = await api('adminDeletePost', { requesterId: me.studentId, postId: p.postId });
+                    const r2 = await api('adminDeletePost', { adminToken, postId: p.postId });
                     if (r2.error) return;
                     toast('Post deleted.', 'success');
                     loadAdminPosts();
@@ -4968,7 +5276,7 @@
             feed.innerHTML = '';
             emptyEl.classList.add('hidden');
 
-            const r = await api('adminListFeedback', { requesterId: me.studentId });
+            const r = await api('adminListFeedback', { adminToken });
             if (r.error || !r.feedback || r.feedback.length === 0) {
                 emptyEl.classList.remove('hidden');
                 return;
@@ -5000,7 +5308,7 @@
                 delBtn.textContent = 'Delete';
                 delBtn.onclick = async () => {
                     if (!confirm('Delete this feedback entry?')) return;
-                    const r2 = await api('adminDeleteFeedback', { requesterId: me.studentId, feedbackId: f.feedbackId });
+                    const r2 = await api('adminDeleteFeedback', { adminToken, feedbackId: f.feedbackId });
                     if (r2.error) return;
                     toast('Feedback deleted.', 'success');
                     loadAdminFeedback();
