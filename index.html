@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Time Table Mash</title>
+    <!-- Casual-snooping deterrent only — see block-devtools.js itself for
+         exactly what this does and doesn't protect against. Must be
+         uploaded alongside this file for the app to work as intended;
+         if it's missing, the app still works fine, this line just fails
+         silently and right-click/DevTools shortcuts stay unblocked. -->
+    <script src="block-devtools.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap"
@@ -25,6 +31,12 @@
             --muted: #6f6b60;
             --radius: 10px;
             --shadow: 0 1px 2px rgba(23, 24, 28, 0.04), 0 8px 24px rgba(23, 24, 28, 0.05);
+            --shadow-neumorphic: 
+                0 10px 30px rgba(23, 24, 28, 0.08),
+                inset 0 2px 4px rgba(255, 255, 255, 0.6),
+                inset 0 -2px 4px rgba(23, 24, 28, 0.05);
+            --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            --backdrop-blur: blur(10px);
         }
 
         * {
@@ -158,19 +170,79 @@
         .sub {
             color: var(--muted);
             font-size: 15px;
-            max-width: 56ch;
-            line-height: 1.55;
+            max-width: 60ch;
+            line-height: 1.65;
         }
 
         /* ---------- Cards ---------- */
         .card {
-            background: var(--card);
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: var(--backdrop-blur) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-top-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow:
+                0 2px 4px rgba(23, 24, 28, 0.03),
+                0 12px 24px rgba(23, 24, 28, 0.07),
+                0 30px 60px rgba(23, 24, 28, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                inset 0 -1px 0 rgba(23, 24, 28, 0.03);
             padding: clamp(20px, 3.5vw, 36px);
             margin-bottom: 22px;
             position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .page-bg-paths {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .topbar, .wrap, .dashboard-shell, #dashboardShell, .modal-overlay {
+            position: relative;
+            z-index: 1;
+        }
+
+        .flow-path {
+            fill: none;
+            stroke: var(--amber);
+            stroke-width: 1.4;
+            stroke-linecap: round;
+            opacity: 0.3;
+            animation: flowDrift 20s ease-in-out infinite;
+        }
+
+        .flow-path:nth-child(2) {
+            stroke: var(--teal);
+            animation-duration: 24s;
+            animation-delay: -4s;
+        }
+
+        .flow-path:nth-child(3) {
+            stroke: var(--amber-deep);
+            animation-duration: 28s;
+            animation-delay: -9s;
+        }
+
+        .flow-path:nth-child(4) {
+            stroke: var(--teal);
+            animation-duration: 22s;
+            animation-delay: -13s;
+        }
+
+        .flow-path:nth-child(5) {
+            stroke: var(--amber);
+            animation-duration: 26s;
+            animation-delay: -17s;
+        }
+
+        @keyframes flowDrift {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; }
+            50% { transform: translateY(-14px) translateX(10px); opacity: 0.4; }
         }
 
         .card::before {
@@ -222,19 +294,23 @@
         select {
             width: 100%;
             padding: 12px 13px;
-            border: 1px solid var(--line);
-            border-radius: 6px;
+            border: 1px solid rgba(227, 222, 210, 0.6);
+            border-radius: 12px;
             font-size: 15px;
-            background: #fdfcfa;
+            background: rgba(253, 252, 250, 0.7);
+            backdrop-filter: var(--backdrop-blur);
             font-family: inherit;
-            transition: border-color .15s, box-shadow .15s;
+            transition: all .2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: inset 0 2px 4px rgba(23, 24, 28, 0.02);
         }
 
         input:focus,
         select:focus {
             outline: none;
-            border-color: var(--ink);
-            box-shadow: 0 0 0 3px rgba(23, 24, 28, 0.06);
+            border-color: var(--amber);
+            box-shadow: 
+                0 0 0 4px rgba(232, 163, 61, 0.15),
+                inset 0 2px 6px rgba(232, 163, 61, 0.08);
         }
 
         input[readonly] {
@@ -391,24 +467,37 @@
         }
 
         button {
-            background: var(--ink);
+            background: linear-gradient(155deg, #35353a 0%, #18181c 100%);
             color: var(--paper);
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 12px 22px;
-            border-radius: 6px;
+            border-radius: 14px;
             font-size: 14px;
             font-weight: 500;
             font-family: 'Space Grotesk', sans-serif;
             cursor: pointer;
             letter-spacing: 0.01em;
-            transition: background .15s, transform .1s;
+            transition: all .25s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow:
+                0 1px 2px rgba(0, 0, 0, 0.2),
+                0 8px 16px rgba(23, 24, 28, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
         }
 
         button:hover {
-            background: var(--amber-deep);
+            background: linear-gradient(155deg, #eeb355 0%, #d4932a 100%);
+            transform: translateY(-3px) scale(1.01);
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                0 20px 40px rgba(232, 163, 61, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                inset 0 -2px 4px rgba(180, 110, 20, 0.3);
         }
 
         button:active {
+            transform: translateY(0px);
+        }        button:active {
             transform: scale(0.98);
         }
 
@@ -632,8 +721,10 @@
         /* ---------- Timetable grid (day x time table) ---------- */
         .tt-scroll {
             overflow-x: auto;
-            border: 1px solid var(--line);
-            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: var(--backdrop-blur);
         }
 
         .tt-table {
@@ -681,13 +772,21 @@
         }
 
         .tt-class-tile {
-            border: 1px solid var(--line);
-            border-radius: 7px;
+            border: 1px solid rgba(227, 222, 210, 0.7);
+            border-radius: 12px;
             padding: 8px 9px;
             cursor: pointer;
-            background: #fdfcfa;
-            transition: border-color .15s, transform .1s, box-shadow .15s;
+            background: rgba(253, 252, 250, 0.75);
+            backdrop-filter: var(--backdrop-blur);
+            transition: all .2s cubic-bezier(0.4, 0.0, 0.2, 1);
             margin-bottom: 4px;
+            box-shadow: 0 2px 8px rgba(23, 24, 28, 0.04);
+        }
+
+        .tt-class-tile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(232, 163, 61, 0.15);
+            border-color: var(--amber);
         }
 
         .tt-class-tile:last-child {
@@ -750,7 +849,8 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(23, 24, 28, 0.45);
+            background: rgba(23, 24, 28, 0.35);
+            backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -769,15 +869,17 @@
         }
 
         .modal {
-            background: var(--card);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: var(--backdrop-blur);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 18px;
             max-width: 440px;
             width: 100%;
             max-height: 82vh;
             overflow-y: auto;
             padding: 26px;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 24px 70px rgba(23, 24, 28, 0.22);
             animation: modalIn .18s cubic-bezier(.2, .8, .3, 1);
         }
 
@@ -855,12 +957,55 @@
             border-radius: 0 6px 6px 0;
         }
 
-        .empty-note {
-            font-size: 13px;
+        #notificationBanners {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .notif-banner {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            background: rgba(232, 163, 61, 0.12);
+            border: 1px solid rgba(232, 163, 61, 0.35);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 13.5px;
+            line-height: 1.5;
+            animation: panelIn .2s ease-out;
+        }
+
+        .notif-banner-text {
+            flex: 1;
+        }
+
+        .notif-banner-dismiss {
+            background: none;
+            border: none;
             color: var(--muted);
-            line-height: 1.6;
-            border-left: 3px solid var(--line);
-            padding-left: 14px;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            padding: 2px 4px;
+            flex-shrink: 0;
+        }
+
+        .notif-banner-dismiss:hover {
+            color: var(--ink);
+        }
+
+        .empty-note {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.7;
+            border-left: 3px solid var(--amber);
+            padding: 12px 16px;
+            background: rgba(232, 163, 61, 0.04);
+            border-radius: 0 8px 8px 0;
+            margin: 8px 0;
         }
 
         /* ---------- Toasts ---------- */
@@ -887,10 +1032,11 @@
             font-family: 'IBM Plex Mono', monospace;
             font-size: 13px;
             padding: 12px 14px;
-            border-radius: 6px;
-            border: 1px solid var(--line);
-            background: var(--card);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(227, 222, 210, 0.6);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: var(--backdrop-blur);
+            box-shadow: 0 8px 24px rgba(23, 24, 28, 0.12);
             animation: slidein 0.15s ease-out;
             width: 100%;
         }
@@ -969,12 +1115,13 @@
         .dash-nav {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            background: var(--card);
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 10px;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: var(--backdrop-blur);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            box-shadow: var(--shadow-glass);
+            padding: 12px;
             position: sticky;
             top: 78px;
             flex-shrink: 0;
@@ -993,9 +1140,9 @@
             font-weight: 500;
             font-size: 13.5px;
             padding: 10px 12px;
-            border-radius: 7px;
+            border-radius: 11px;
             cursor: pointer;
-            transition: background .15s, color .15s, transform .1s;
+            transition: all .2s cubic-bezier(0.4, 0.0, 0.2, 1);
             text-align: left;
         }
 
@@ -1007,13 +1154,14 @@
         }
 
         .dash-nav button:hover {
-            background: var(--paper);
-            transform: translateX(2px);
+            background: rgba(232, 163, 61, 0.08);
+            transform: translateX(3px);
         }
 
         .dash-nav button.active {
-            background: var(--ink);
+            background: linear-gradient(135deg, #2a2a2e 0%, #1a1a1f 100%);
             color: var(--paper);
+            box-shadow: var(--shadow-neumorphic);
         }
 
         .dash-nav-divider {
@@ -1062,6 +1210,44 @@
             flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 18px;
+        }
+
+        .external-tool-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            text-decoration: none;
+            color: inherit;
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            transition: border-color .15s, transform .1s;
+        }
+
+        .external-tool-card:hover {
+            border-color: var(--amber);
+            transform: translateY(-1px);
+        }
+
+        .etc-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 14.5px;
+        }
+
+        .etc-sub {
+            font-size: 12.5px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .etc-arrow {
+            font-size: 18px;
+            color: var(--muted);
+            flex-shrink: 0;
         }
 
         .filter-row select {
@@ -1322,17 +1508,99 @@
         }
 
         .class-card {
-            border: 1px solid var(--line);
-            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-top-color: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
             padding: 12px 14px;
             cursor: pointer;
+            background: rgba(253, 252, 250, 0.7);
+            backdrop-filter: var(--backdrop-blur) saturate(150%);
+            transition: all .3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow:
+                0 2px 4px rgba(23, 24, 28, 0.03),
+                0 8px 16px rgba(23, 24, 28, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                inset 0 -1px 0 rgba(23, 24, 28, 0.02);
+            transform-style: preserve-3d;
+            perspective: 800px;
+        }
+
+        .build-course-card {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
             background: #fdfcfa;
-            transition: border-color .15s, transform .1s;
+        }
+
+        .build-course-header {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .build-course-title {
+            font-size: 12.5px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .build-type-group {
+            margin-top: 12px;
+        }
+
+        .build-type-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .build-section-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 9px 12px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: border-color .15s, background .15s;
+        }
+
+        .build-section-row:hover {
+            border-color: var(--amber);
+        }
+
+        .build-section-row.selected {
+            border-color: var(--amber-deep);
+            background: rgba(232, 163, 61, 0.1);
+            box-shadow: 0 0 0 2px rgba(232, 163, 61, 0.3);
+        }
+
+        .build-section-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+        }
+
+        .build-section-meta {
+            font-size: 12px;
+            color: var(--muted);
+            text-align: right;
         }
 
         .class-card:hover {
-            border-color: var(--amber-deep);
-            transform: translateY(-1px);
+            border-color: var(--amber);
+            transform: translateY(-4px) rotateX(2deg) scale(1.01);
+            box-shadow:
+                0 4px 8px rgba(23, 24, 28, 0.04),
+                0 20px 36px rgba(232, 163, 61, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
         }
 
         .class-card .cc-title {
@@ -1348,9 +1616,18 @@
             line-height: 1.6;
         }
     </style>
+    <script src="block-devtools.js"></script>
 </head>
 
 <body>
+
+    <svg class="page-bg-paths" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <path class="flow-path" d="M-80,120 C220,40 460,260 760,160 S1180,70 1480,200" />
+        <path class="flow-path" d="M-80,280 C260,360 500,120 820,240 S1200,340 1480,220" />
+        <path class="flow-path" d="M-80,440 C300,340 560,580 860,460 S1240,360 1480,500" />
+        <path class="flow-path" d="M-80,600 C320,660 580,420 900,560 S1240,660 1480,540" />
+        <path class="flow-path" d="M-80,760 C260,820 540,640 840,740 S1240,800 1480,700" />
+    </svg>
 
     <div class="topbar">
         <div class="brand"><span class="mark"></span><span>Time Table Mash</span></div>
@@ -1471,6 +1748,15 @@
                     </div>
                 </div>
                 <div class="btn-row"><button id="registerBtn">Register</button></div>
+
+                <div class="full hidden" id="registerCodeWrap" style="margin-top:14px;">
+                    <label>Verification code</label>
+                    <div class="sub" style="font-size:12px; margin-bottom:8px;">
+                        A 6-digit code was sent to your BITS email — enter it to finish creating your account.
+                    </div>
+                    <input type="text" id="registerCodeInput" placeholder="6-digit code" maxlength="6" inputmode="numeric">
+                    <div class="btn-row"><button id="confirmRegisterBtn">Confirm &amp; create account</button></div>
+                </div>
             </div>
 
             <div id="loginForm" class="hidden">
@@ -1514,6 +1800,24 @@
             <div class="error" id="uploadErr"></div>
         </div>
 
+        <!-- BUILD FROM SECTIONS -->
+        <div class="card hidden" data-step="Build from sections" id="buildCard">
+            <h1 style="font-size:20px;">Build your timetable</h1>
+            <div class="sub" style="margin-bottom:16px; max-width:560px;">
+                Pick a real section for each of your required courses — actual instructor names and rooms, sourced
+                from the official course list. You'll fill in the day and time for each on the next screen, since
+                that part isn't in this data.
+            </div>
+            <div id="buildCourseList"></div>
+            <div class="empty-note hidden" id="buildEmpty">
+                No course/section data available yet for your program and semester.
+            </div>
+            <div class="btn-row">
+                <button id="buildCancelBtn" class="ghost">Cancel</button>
+                <button id="buildContinueBtn">Continue to review</button>
+            </div>
+        </div>
+
         <!-- STEP 3: REVIEW -->
         <div class="card hidden" data-step="03 — Review" id="reviewCard">
             <div class="review-head">
@@ -1525,6 +1829,7 @@
                 </div>
             </div>
             <div class="tt-scroll" id="reviewTtGrid" style="margin-bottom:18px;"></div>
+            <div class="sub hidden" id="courseDataUpdatedNote" style="font-size:11.5px; margin-bottom:6px;"></div>
             <div class="sub" style="margin-bottom:10px; font-size:13px;">Full details — tap any card to edit:</div>
             <div class="review-scroll" id="reviewBody"></div>
         </div>
@@ -1538,6 +1843,7 @@
 
         <!-- DASHBOARD -->
         <div class="hidden" id="dashboardShell">
+            <div id="notificationBanners"></div>
             <div class="dashboard-shell">
                 <nav class="dash-nav" id="dashNav">
                     <button data-panel="panelHome" class="active"><span class="nav-icon">⌂</span>Home</button>
@@ -1554,7 +1860,15 @@
                     <!-- HOME -->
                     <div class="dash-panel active" id="panelHome">
                         <div class="card" data-step="Home">
+                            <a href="https://bitscompass-one.vercel.app/" target="_blank" rel="noopener noreferrer" class="external-tool-card">
+                                <div>
+                                    <div class="etc-title">🧭 Find a free room right now</div>
+                                    <div class="etc-sub">BITSCompass — live room availability across campus, made by Anant Gupta</div>
+                                </div>
+                                <span class="etc-arrow">↗</span>
+                            </a>
                             <div class="filter-row">
+                                <input type="text" id="homeSearch" placeholder="Search by name" style="max-width:220px;">
                                 <select id="homeFilterProgram">
                                     <option value="">All programs</option>
                                     <option value="A1">A1 — B.E. Chemical</option>
@@ -1677,9 +1991,20 @@
                             <div class="btn-row"><button id="saveAcademicBtn">Save changes</button></div>
                             <div class="status" id="idChangeRequestStatus"></div>
 
+                            <label style="margin-top:22px;">Standard courses for your program</label>
+                            <div class="sub" style="font-size:12.5px; margin-bottom:8px;">
+                                Purely informational — a reference of what's typically taken in your program and
+                                semester. It never checks or changes your own uploaded timetable. This data may not be
+                                fully complete — see the note below the list.
+                            </div>
+                            <div id="curriculumRefWrap"></div>
+
                             <label style="margin-top:26px;">Timetable</label>
                             <div class="sub" style="margin-bottom:10px;">Editing your timetable happens here — the Timetable tab is just for viewing it.</div>
-                            <div class="btn-row"><button id="reuploadBtn" class="ghost">Upload / replace timetable</button></div>
+                            <div class="btn-row">
+                                <button id="reuploadBtn" class="ghost">Upload / replace timetable</button>
+                                <button id="openBuildBtn" class="ghost">Build from real sections</button>
+                            </div>
 
                             <label style="margin-top:26px;">Your posts</label>
                             <div id="ownPostsWrap" style="margin-top:8px;"></div>
@@ -1782,6 +2107,8 @@
                     <button data-admin-panel="panelAdminPosts"><span class="nav-icon">✎</span>Posts</button>
                     <button data-admin-panel="panelAdminFeedback"><span class="nav-icon">✉</span>Feedback</button>
                     <button data-admin-panel="panelAdminFormFields"><span class="nav-icon">▦</span>Register form</button>
+                    <button data-admin-panel="panelAdminNotify"><span class="nav-icon">✉</span>Notify</button>
+                    <button data-admin-panel="panelAdminCatalog"><span class="nav-icon">▤</span>Catalog</button>
                     <div class="dash-nav-divider">
                         <button id="exitAdminBtn"><span class="nav-icon">←</span>Exit admin</button>
                     </div>
@@ -1940,6 +2267,95 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="dash-panel" id="panelAdminNotify">
+                        <div class="card admin-page" data-step="Admin · Notify">
+                            <div class="admin-header">
+                                <div>
+                                    <h1>✉ Notify <span class="admin-badge">Restricted</span></h1>
+                                    <div class="sub" style="max-width:640px;">Send a message to EVERYONE — it shows up as a banner the next time each student visits the site. To message one specific student instead, use "Manage" on their entry in the Users page.</div>
+                                </div>
+                            </div>
+                            <div class="admin-section">
+                                <div class="admin-section-title" style="margin-bottom:12px;">Send to all users</div>
+                                <div class="form-grid">
+                                    <div class="full">
+                                        <label>Message</label>
+                                        <input type="text" id="notifyMessage" placeholder="e.g. Timetable upload will be down for maintenance tonight.">
+                                    </div>
+                                </div>
+                                <div class="btn-row"><button id="sendNotifyBtn">Send to all</button></div>
+                                <div class="status" id="notifyStatus"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-panel" id="panelAdminCatalog">
+                        <div class="card admin-page" data-step="Admin · Catalog">
+                            <div class="admin-header">
+                                <div>
+                                    <h1>▤ Course catalog <span class="admin-badge">Restricted</span></h1>
+                                    <div class="sub" style="max-width:640px;">
+                                        Real course codes/titles, imported for reference. NOTE: the feature that once
+                                        auto-corrected OCR results against this list is disabled — DVM's naming
+                                        convention turned out not to reliably match what the real BITS ERP shows, so
+                                        nothing currently reads this data automatically. Kept here in case a properly-
+                                        verified use comes up later.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="admin-section">
+                                <div class="admin-section-head">
+                                    <span class="admin-section-title">Current catalog</span>
+                                    <span class="sub" id="catalogCount" style="font-size:12.5px;"></span>
+                                </div>
+                                <div class="sub" style="font-size:12.5px; margin:4px 0 12px;">
+                                    Paste a JSON array of course objects — each needs at least a "code" (e.g. from
+                                    DVM's course-data JSON, using its "course_no" and "course_title" fields renamed to
+                                    "code"/"title"). Importing REPLACES the entire catalog, it doesn't merge with what's
+                                    already there.
+                                </div>
+                                <textarea id="catalogImportInput" rows="8" style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:12.5px; padding:10px; border:1px solid var(--line); border-radius:6px; box-sizing:border-box;" placeholder='[{"code": "MATH F101", "title": "MULTIVARIABLE CALCULUS"}, {"code": "CS F111", "title": "COMPUTER PROGRAMMING"}]'></textarea>
+                                <div class="btn-row"><button id="importCatalogBtn">Import</button></div>
+                                <div class="status" id="catalogImportStatus"></div>
+                            </div>
+
+                            <div class="admin-section" style="margin-top:26px; padding-top:20px; border-top:1px solid var(--line);">
+                                <div class="admin-section-head">
+                                    <span class="admin-section-title">Standard courses by program &amp; semester</span>
+                                    <span class="sub" id="curriculumCount" style="font-size:12.5px;"></span>
+                                </div>
+                                <div class="sub" style="font-size:12.5px; margin:4px 0 12px;">
+                                    Shown to students on Profile as a reference only — this is NEVER used to check or
+                                    modify a student's own uploaded timetable, only to display "here's what's typical
+                                    for your program/semester." Paste a JSON object keyed like "A7|1" (program code,
+                                    pipe, semester number 1-10), each mapping to an array of course codes. Importing
+                                    REPLACES everything.
+                                </div>
+                                <textarea id="curriculumImportInput" rows="6" style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:12.5px; padding:10px; border:1px solid var(--line); border-radius:6px; box-sizing:border-box;" placeholder='{"A7|1": ["CS U111", "MATH U101", "EEE U111"], "A3|2": ["BIO U101", "CHEM U101"]}'></textarea>
+                                <div class="btn-row"><button id="importCurriculumBtn">Import</button></div>
+                                <div class="status" id="curriculumImportStatus"></div>
+                            </div>
+
+                            <div class="admin-section" style="margin-top:26px; padding-top:20px; border-top:1px solid var(--line);">
+                                <div class="admin-section-head">
+                                    <span class="admin-section-title">Section options (instructors, rooms)</span>
+                                    <span class="sub" id="sectionCatalogCount" style="font-size:12.5px;"></span>
+                                </div>
+                                <div class="sub" style="font-size:12.5px; margin:4px 0 12px;">
+                                    Powers "Build your timetable" on Profile. Auto-refreshed nightly (see
+                                    nightlySyncCourseData in Code.gs) — this manual import is for forcing an update
+                                    right now instead of waiting. Paste an array of
+                                    { code, title, lecture: [{sec, instructors: [...], room}], tutorial: [...],
+                                    practical: [...] } — same shape DVM's own data uses. Importing REPLACES
+                                    everything.
+                                </div>
+                                <textarea id="sectionCatalogImportInput" rows="6" style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:12.5px; padding:10px; border:1px solid var(--line); border-radius:6px; box-sizing:border-box;" placeholder='[{"code": "MATH U101", "title": "MULTIVARIABLE CALCULUS", "lecture": [{"sec": "1", "instructors": ["HARI OM BANSAL"], "room": "5102"}], "tutorial": [], "practical": []}]'></textarea>
+                                <div class="btn-row"><button id="importSectionCatalogBtn">Import</button></div>
+                                <div class="status" id="sectionCatalogImportStatus"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1964,7 +2380,9 @@
                     </select>
                 </div>
                 <div class="full"><label>Course — Section</label>
-                    <input type="text" id="editCombo" placeholder="CS U111 - P2"></div>
+                    <input type="text" id="editCombo" placeholder="CS U111 - P2" list="courseSuggestions">
+                    <datalist id="courseSuggestions"></datalist>
+                </div>
                 <div class="full"><label>Type</label>
                     <select id="editType">
                         <option value="">Not specified</option>
@@ -2032,7 +2450,12 @@
             <h3 id="adminUserName">Manage user</h3>
             <div class="sub" id="adminUserMeta" style="margin:2px 0 16px;"></div>
 
-            <label>Program</label><input type="text" id="adminEditProgram">
+            <label>Send message to this user</label>
+            <input type="text" id="adminUserMessageInput" placeholder="e.g. Please re-upload your timetable, it looks incomplete.">
+            <div class="btn-row"><button id="adminUserMessageBtn" class="ghost">Send</button></div>
+            <div class="status" id="adminUserMessageStatus"></div>
+
+            <label style="margin-top:22px;">Program</label><input type="text" id="adminEditProgram">
             <label>Semester</label><input type="text" id="adminEditSemester">
             <label>Club</label><input type="text" id="adminEditClub">
             <label>Sport</label><input type="text" id="adminEditSport">
@@ -2061,27 +2484,7 @@
 
     <script>
         // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE:
-        // Right-click and common DevTools/view-source shortcuts are
-        // blocked below as a deterrent against casual snooping — NOT as
-        // real security. Anyone can still open DevTools via the browser's
-        // own menu, or view this exact source via view-source: typed into
-        // the address bar, or just download the raw file directly (this
-        // page is hosted on GitHub Pages, publicly fetchable). Nothing
-        // that actually matters for safety in this app depends on this
-        // block — every ownership check, every admin check, every write
-        // lock is enforced server-side in Code.gs regardless of whether
-        // someone can see this file's source.
-        document.addEventListener('contextmenu', (e) => e.preventDefault());
-        document.addEventListener('keydown', (e) => {
-            const key = e.key.toUpperCase();
-            const blockedCombo =
-                key === 'F12' ||
-                ((e.ctrlKey || e.metaKey) && e.shiftKey && (key === 'I' || key === 'J' || key === 'C')) ||
-                ((e.ctrlKey || e.metaKey) && key === 'U');
-            if (blockedCombo) e.preventDefault();
-        });
-
-        const API_URL = "https://script.google.com/macros/s/AKfycbw_K1fyt63A7pmDfaT4fjM9E1VesihUej_w8nwoIIOsAMXugIvH_kcgUIS3KeLKWl74yA/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbyovay1RMW8Wo-g1EHA-vc0z53136WlDY6952drXwfCmhZ_Ael-MaJyJLyeJc03SMhKEw/exec";
 
         let me = { studentId: null, name: null, program: '', semester: '', bitsId: '', beProgram: '', club: '', sport: '', fieldOfInterest: '', timetableVisibility: 'private' };
 
@@ -2204,6 +2607,7 @@
             showAuthTab('login');
         }
         loadFormFieldsConfig();
+        loadCourseCatalog();
 
         // Show/hide password toggles
         document.querySelectorAll('.pw-toggle').forEach(btn => {
@@ -2279,6 +2683,16 @@
         // saves the whole field list). Each field: { key, label, type,
         // options } — options only used when type is "select".
         let formFieldsConfig = [];
+
+        // Real course codes/titles imported by an admin (see Admin >
+        // Catalog) — used to cross-check and auto-correct OCR-extracted
+        // course codes against actual ground truth. Loaded once at page
+        // start, same as formFieldsConfig above.
+        let courseCatalog = [];
+        async function loadCourseCatalog() {
+            const r = await api('getCourseCatalog', {}, true);
+            courseCatalog = (r.error || !r.courses) ? [] : r.courses;
+        }
 
         function renderCustomRegisterFields() {
             const wrap = document.getElementById('customFieldsWrap');
@@ -2377,6 +2791,135 @@
             renderAdminFormFieldsList();
         }
 
+        // Populates the "To" dropdown with every student (in addition to
+        // the always-present "All users" option) so admin can target one
+        // specific person by name, not just broadcast to everyone.
+        // Purely a broadcast page now — targeted messaging to one
+        // specific student lives in the "Manage" modal on Users instead,
+        // right where the admin is already looking at that person.
+        function loadAdminNotify() {
+            document.getElementById('notifyMessage').value = '';
+            document.getElementById('notifyStatus').textContent = '';
+        }
+
+        document.getElementById('sendNotifyBtn').onclick = async () => {
+            const message = document.getElementById('notifyMessage').value.trim();
+            const statusEl = document.getElementById('notifyStatus');
+            const btn = document.getElementById('sendNotifyBtn');
+            if (!message) { toast('Write a message first.', 'error'); return; }
+
+            btn.disabled = true;
+            statusEl.innerHTML = '<span class="spinner"></span>sending...';
+            const r = await api('adminSendNotification', { adminToken, studentId: '', message });
+            btn.disabled = false;
+            statusEl.textContent = '';
+            if (r.error) return;
+
+            document.getElementById('notifyMessage').value = '';
+            toast('Sent to all users.', 'success');
+        };
+
+        async function loadAdminCatalog() {
+            const countEl = document.getElementById('catalogCount');
+            countEl.textContent = 'loading...';
+            const r = await api('getCourseCatalog', {}, true);
+            if (r.error || !r.courses) { countEl.textContent = ''; return; }
+            countEl.textContent = r.courses.length === 1 ? '1 course' : `${r.courses.length} courses`;
+
+            // No "list everything" action exists for curriculum data (it's
+            // looked up per program+semester, not browsed as a whole), so
+            // this just clears any stale status text rather than showing a
+            // live count.
+            document.getElementById('curriculumCount').textContent = '';
+            document.getElementById('curriculumImportStatus').textContent = '';
+            document.getElementById('sectionCatalogCount').textContent = '';
+            document.getElementById('sectionCatalogImportStatus').textContent = '';
+        }
+
+        document.getElementById('importCurriculumBtn').onclick = async () => {
+            const raw = document.getElementById('curriculumImportInput').value.trim();
+            const statusEl = document.getElementById('curriculumImportStatus');
+            const btn = document.getElementById('importCurriculumBtn');
+            if (!raw) { toast('Paste the curriculum data first.', 'error'); return; }
+
+            let curriculum;
+            try {
+                curriculum = JSON.parse(raw);
+                if (typeof curriculum !== 'object' || Array.isArray(curriculum) || curriculum === null) {
+                    throw new Error('not an object');
+                }
+            } catch (e) {
+                toast('That doesn\'t look like valid JSON — check for a stray comma or missing bracket.', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            statusEl.innerHTML = '<span class="spinner"></span>importing...';
+            const r = await api('adminSetBranchCurriculum', { adminToken, curriculum });
+            btn.disabled = false;
+            statusEl.textContent = '';
+            if (r.error) return;
+
+            document.getElementById('curriculumImportInput').value = '';
+            document.getElementById('curriculumCount').textContent = `${r.count} program/semester combos`;
+            toast(`Imported curriculum for ${r.count} program/semester combinations.`, 'success');
+        };
+
+        document.getElementById('importSectionCatalogBtn').onclick = async () => {
+            const raw = document.getElementById('sectionCatalogImportInput').value.trim();
+            const statusEl = document.getElementById('sectionCatalogImportStatus');
+            const btn = document.getElementById('importSectionCatalogBtn');
+            if (!raw) { toast('Paste the section data first.', 'error'); return; }
+
+            let courses;
+            try {
+                courses = JSON.parse(raw);
+                if (!Array.isArray(courses)) throw new Error('not an array');
+            } catch (e) {
+                toast('That doesn\'t look like valid JSON — check for a stray comma or missing bracket.', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            statusEl.innerHTML = '<span class="spinner"></span>importing...';
+            const r = await api('adminSetSectionCatalog', { adminToken, courses });
+            btn.disabled = false;
+            statusEl.textContent = '';
+            if (r.error) return;
+
+            document.getElementById('sectionCatalogImportInput').value = '';
+            document.getElementById('sectionCatalogCount').textContent = `${r.count} sections`;
+            toast(`Imported ${r.count} sections.`, 'success');
+        };
+
+        document.getElementById('importCatalogBtn').onclick = async () => {
+            const raw = document.getElementById('catalogImportInput').value.trim();
+            const statusEl = document.getElementById('catalogImportStatus');
+            const btn = document.getElementById('importCatalogBtn');
+            if (!raw) { toast('Paste the course list first.', 'error'); return; }
+
+            let courses;
+            try {
+                courses = JSON.parse(raw);
+                if (!Array.isArray(courses)) throw new Error('not an array');
+            } catch (e) {
+                toast('That doesn\'t look like valid JSON — check for a stray comma or missing bracket.', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            statusEl.innerHTML = '<span class="spinner"></span>importing...';
+            const r = await api('adminSetCourseCatalog', { adminToken, courses });
+            btn.disabled = false;
+            statusEl.textContent = '';
+            if (r.error) return;
+
+            document.getElementById('catalogImportInput').value = '';
+            toast(`Imported ${r.count} courses.`, 'success');
+            loadAdminCatalog();
+            loadCourseCatalog(); // refresh the in-memory copy used for OCR correction too, not just the admin view
+        };
+
         document.getElementById('newFieldType').addEventListener('change', (e) => {
             document.getElementById('newFieldOptionsWrap').classList.toggle('hidden', e.target.value !== 'select');
         });
@@ -2442,9 +2985,29 @@
 
             const btn = document.getElementById('registerBtn');
             btn.disabled = true;
-            statusEl.innerHTML = '<span class="spinner"></span>registering...';
+            statusEl.innerHTML = '<span class="spinner"></span>sending code...';
             const customFields = collectCustomFieldValues();
-            const r = await api('register', { name, email, password, semester, program, campus, beProgram, customFields });
+            const r = await api('requestRegistration', { name, email, password, semester, program, campus, beProgram, customFields });
+            statusEl.textContent = '';
+            btn.disabled = false;
+            if (r.error) { errEl.textContent = scrubEmails(r.error); return; }
+
+            document.getElementById('registerCodeWrap').classList.remove('hidden');
+            document.getElementById('registerCodeInput').focus();
+            toast('Verification code sent to your BITS email.', 'success');
+        };
+
+        document.getElementById('confirmRegisterBtn').onclick = async () => {
+            const email = document.getElementById('regEmail').value.trim();
+            const code = document.getElementById('registerCodeInput').value.trim();
+            const errEl = document.getElementById('loginErr');
+            const statusEl = document.getElementById('loginStatus');
+            if (!code) { errEl.textContent = 'Enter the code from your email.'; return; }
+
+            const btn = document.getElementById('confirmRegisterBtn');
+            btn.disabled = true;
+            statusEl.innerHTML = '<span class="spinner"></span>confirming...';
+            const r = await api('confirmRegistration', { email, code });
             statusEl.textContent = '';
             btn.disabled = false;
             if (r.error) { errEl.textContent = scrubEmails(r.error); return; }
@@ -2457,6 +3020,8 @@
             me.beProgram = r.beProgram || '';
             me.timetableVisibility = r.timetableVisibility || 'private';
             saveSession(me.studentId); console.log('[session] saved after register:', me.studentId, '-> localStorage now has:', localStorage.getItem(SESSION_KEY));
+            document.getElementById('registerCodeWrap').classList.add('hidden');
+            document.getElementById('registerCodeInput').value = '';
             toast(`Registered. Your BITS ID is ${r.bitsId}.`, 'success'); startHeartbeat();
             enterApp();
         };
@@ -2565,7 +3130,7 @@
             // and the campus letter tells us which campus domain to use.
             const m = bitsId.match(/^(\d{4})([A-Z0-9]{2})PS(\d{4})([PGHD])$/i);
             if (!m) {
-                errEl.textContent = 'Enter a valid BITS ID (year + program code + PS + serial + campus letter, e.g. 2026ABPSxxxP).';
+                errEl.textContent = 'Enter a valid BITS ID (year + program code + PS + serial + campus letter, e.g. 2026ABPS0617P).';
                 return;
             }
             const CAMPUS_DOMAINS = { P: 'pilani', G: 'goa', H: 'hyderabad', D: 'dubai' };
@@ -3447,6 +4012,38 @@
         // two entirely different rooms, so only the letters get corrected
         // toward the majority spelling; the numbers are never touched by
         // this and must already be identical.
+        // Cross-checks each extracted course code against the REAL course
+        // catalog (external ground truth from DVM, imported by an admin —
+        // see Admin > Catalog) rather than just self-consistency within
+        // one upload. This catches things reconcileByFrequency structurally
+        // can't: a misread on a course that only appears ONCE in a
+        // student's timetable has no repetition to vote against, so
+        // frequency-based correction has nothing to work with there — but
+        // an external ground-truth list does. Up to 2 character edits is
+        // allowed (enough to fix a single-letter misread like F->U, or a
+        // couple of digit slips) without being so loose that two genuinely
+        // different real courses get confused for each other. Gracefully
+        // does nothing if no catalog has been imported yet.
+        function correctAgainstCatalog(classes) {
+            if (!courseCatalog || courseCatalog.length === 0) return classes;
+            const catalogCodes = courseCatalog.map(c => c.code.trim().toUpperCase());
+            return classes.map(c => {
+                if (!c.course) return c;
+                const normalized = c.course.trim().toUpperCase();
+                if (catalogCodes.includes(normalized)) return c; // already exact, nothing to correct
+
+                let best = null, bestDist = Infinity;
+                catalogCodes.forEach(code => {
+                    const dist = levenshtein(normalized, code);
+                    if (dist < bestDist) { bestDist = dist; best = code; }
+                });
+                if (best && bestDist > 0 && bestDist <= 2) {
+                    return { ...c, course: best };
+                }
+                return c;
+            });
+        }
+
         function reconcileByFrequency(classes, field, minCount = 2, maxDistanceRatio = 0.3) {
             const freq = new Map();
             classes.forEach(c => {
@@ -3549,6 +4146,17 @@
                 // surviving as two near-duplicate entries.
                 allClasses = reconcileByFrequency(allClasses, 'course', 2, 0.3);
                 allClasses = reconcileByFrequency(allClasses, 'location', 2, 0.25);
+                // correctAgainstCatalog is DISABLED — DVM's course-code
+                // naming convention doesn't reliably match what the real
+                // BITS ERP actually displays to students (e.g. ERP shows
+                // "MATH U101"; DVM's own catalog data uses "MATH F101" for
+                // what's apparently the same course). Auto-correcting
+                // against DVM's list risked silently turning genuinely
+                // correct ERP-sourced codes into wrong ones. Left in place
+                // but unused, in case a properly-verified ground-truth
+                // source becomes available later — see correctAgainstCatalog
+                // itself for the full function, untouched.
+                // allClasses = correctAgainstCatalog(allClasses);
                 extracted = mergeClasses(allClasses);
 
                 renderReview();
@@ -3608,7 +4216,41 @@
 
         let editingIndex = null; // an index into `extracted`, or -1 while adding a brand-new class
 
+        // Populates the course-suggestion dropdown in the edit modal, from
+        // the same BranchCurriculum reference data shown on Profile — pure
+        // convenience for typing faster/more accurately during Review,
+        // never used to validate or block anything a student enters.
+        // Free typing still works for anything not in the suggested list
+        // (electives, courses this data doesn't cover, etc.).
+        async function loadEditCourseSuggestions() {
+            if (!me.program || !me.semester) return;
+            const r = await api('getBranchCurriculum', { program: me.program, semester: me.semester }, true);
+            const datalist = document.getElementById('courseSuggestions');
+            datalist.innerHTML = '';
+            if (!r.error && r.courses) {
+                r.courses.forEach(code => {
+                    const opt = document.createElement('option');
+                    opt.value = code;
+                    datalist.appendChild(opt);
+                });
+            }
+
+            // Only ever shown if a real update has actually happened —
+            // stays hidden entirely rather than showing a placeholder or
+            // "never updated" message.
+            const noteEl = document.getElementById('courseDataUpdatedNote');
+            const statusR = await api('getCourseDataStatus', {}, true);
+            if (statusR.error || !statusR.lastUpdated) {
+                noteEl.classList.add('hidden');
+                return;
+            }
+            const updatedDate = new Date(statusR.lastUpdated);
+            noteEl.textContent = `Course suggestions last updated: ${updatedDate.toLocaleDateString()}`;
+            noteEl.classList.remove('hidden');
+        }
+
         function renderReview() {
+            loadEditCourseSuggestions();
             const body = document.getElementById('reviewBody');
             body.innerHTML = '';
             extracted.forEach((c, i) => {
@@ -3674,6 +4316,37 @@
             toast('Class removed.', 'success');
         };
 
+        // Conflict detection — compares ONLY the classes already in this
+        // student's own extracted[] list against each other. No external
+        // data involved at all: this is just comparing day+time values
+        // the student (or "Build your timetable") already provided,
+        // which is honest to build even without DVM's slot-time mapping.
+        function parseTimeRangeMinutes(timeStr) {
+            const m = String(timeStr || '').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+            if (!m) return null;
+            const startMin = Number(m[1]) * 60 + Number(m[2]);
+            let endMin = Number(m[3]) * 60 + Number(m[4]);
+            if (endMin <= startMin) endMin += 24 * 60; // handles a rare overnight-crossing range safely
+            return { startMin, endMin };
+        }
+
+        function findScheduleConflicts(day, time, excludeIndex) {
+            const dayNorm = String(day || '').trim().toUpperCase();
+            const range = parseTimeRangeMinutes(time);
+            if (!dayNorm || !range) return [];
+
+            const conflicts = [];
+            extracted.forEach((c, i) => {
+                if (i === excludeIndex) return;
+                if (String(c.day || '').trim().toUpperCase() !== dayNorm) return;
+                const otherRange = parseTimeRangeMinutes(c.time);
+                if (!otherRange) return;
+                const overlaps = range.startMin < otherRange.endMin && otherRange.startMin < range.endMin;
+                if (overlaps) conflicts.push(c);
+            });
+            return conflicts;
+        }
+
         document.getElementById('saveEditBtn').onclick = () => {
             if (editingIndex === null) return;
             const combo = document.getElementById('editCombo').value;
@@ -3686,6 +4359,8 @@
             const day = document.getElementById('editDay').value;
             const time = cleanTimeString(document.getElementById('editTime').value.trim()) || document.getElementById('editTime').value.trim();
             const location = document.getElementById('editLocation').value.trim();
+
+            const conflicts = findScheduleConflicts(day, time, editingIndex);
 
             if (editingIndex === -1) {
                 extracted.push({ course, section, type, day, time, location });
@@ -3701,7 +4376,13 @@
             document.getElementById('editModal').classList.add('hidden');
             renderReview();
             renderReviewTable();
-            toast(editingIndex === -1 ? 'Class added.' : 'Class updated.', 'success');
+
+            if (conflicts.length > 0) {
+                const names = conflicts.map(c => comboTextNoType(c)).join(', ');
+                toast(`Heads up — this overlaps with ${names} at the same day/time.`, 'error');
+            } else {
+                toast(editingIndex === -1 ? 'Class added.' : 'Class updated.', 'success');
+            }
         };
 
         document.getElementById('reviewAddBtn').onclick = () => openAddClass(null, null);
@@ -4424,6 +5105,38 @@
             switchPanel('panelHome');
             loadHome();
             loadProfilePanel();
+            loadNotifications();
+        }
+
+        // Shown on every visit — a fresh check runs each time
+        // openDashboard is called (login, session restore), not cached
+        // across visits, so a newly-sent admin message or a newly-missing
+        // timetable status is always caught.
+        async function loadNotifications() {
+            const wrap = document.getElementById('notificationBanners');
+            wrap.innerHTML = '';
+            const r = await api('getMyNotifications', { studentId: me.studentId }, true);
+            if (r.error || !r.notifications) return;
+            r.notifications.forEach(n => {
+                const banner = document.createElement('div');
+                banner.className = 'notif-banner';
+                const textEl = document.createElement('div');
+                textEl.className = 'notif-banner-text';
+                textEl.textContent = n.message; // textContent — admin-typed or system text, never innerHTML
+                banner.appendChild(textEl);
+                if (n.dismissible) {
+                    const dismissBtn = document.createElement('button');
+                    dismissBtn.className = 'notif-banner-dismiss';
+                    dismissBtn.textContent = '×';
+                    dismissBtn.setAttribute('aria-label', 'Dismiss');
+                    dismissBtn.onclick = async () => {
+                        banner.remove();
+                        await api('dismissNotification', { studentId: me.studentId, notificationId: n.notificationId }, true);
+                    };
+                    banner.appendChild(dismissBtn);
+                }
+                wrap.appendChild(banner);
+            });
         }
 
         document.getElementById('enterDashboardBtn').onclick = openDashboard;
@@ -4434,6 +5147,138 @@
             document.getElementById('uploadCard').classList.remove('hidden');
             resetDropzone();
             setStep('stepUpload');
+        };
+
+        // ---- Build from real sections (alternative to screenshot upload) ----
+        // Tracks the currently selected section per course+type, e.g.
+        // { "MATH U101": { lecture: {sec, room, instructors}, tutorial: {...} } }
+        let buildSelections = {};
+        const BUILD_TYPE_PREFIX = { lecture: 'L', tutorial: 'T', practical: 'P' };
+        const BUILD_TYPE_LABEL = { lecture: 'Lecture', tutorial: 'Tutorial', practical: 'Laboratory' };
+
+        document.getElementById('openBuildBtn').onclick = () => {
+            document.getElementById('dashboardShell').classList.add('hidden');
+            document.getElementById('stepIndicator').classList.remove('hidden');
+            document.getElementById('buildCard').classList.remove('hidden');
+            loadBuildTimetable();
+        };
+
+        document.getElementById('buildCancelBtn').onclick = () => {
+            document.getElementById('buildCard').classList.add('hidden');
+            document.getElementById('stepIndicator').classList.add('hidden');
+            document.getElementById('dashboardShell').classList.remove('hidden');
+        };
+
+        async function loadBuildTimetable() {
+            buildSelections = {};
+            const listEl = document.getElementById('buildCourseList');
+            const emptyEl = document.getElementById('buildEmpty');
+            listEl.innerHTML = '<div class="empty-note"><span class="spinner"></span>loading real course data...</div>';
+            emptyEl.classList.add('hidden');
+
+            const curriculumR = await api('getBranchCurriculum', { program: me.program, semester: me.semester }, true);
+            if (curriculumR.error || !curriculumR.courses || curriculumR.courses.length === 0) {
+                listEl.innerHTML = '';
+                emptyEl.classList.remove('hidden');
+                return;
+            }
+
+            const sectionsR = await api('getSectionOptions', { courseCodes: curriculumR.courses }, true);
+            listEl.innerHTML = '';
+            if (sectionsR.error || !sectionsR.sections || Object.keys(sectionsR.sections).length === 0) {
+                emptyEl.classList.remove('hidden');
+                return;
+            }
+
+            curriculumR.courses.forEach(code => {
+                const courseData = sectionsR.sections[code];
+                if (!courseData) return; // this required course isn't in the section data — skip it silently
+
+                const card = document.createElement('div');
+                card.className = 'build-course-card';
+                const header = document.createElement('div');
+                header.className = 'build-course-header';
+                header.textContent = code;
+                const titleEl = document.createElement('div');
+                titleEl.className = 'build-course-title';
+                titleEl.textContent = courseData.title || '';
+                card.appendChild(header);
+                card.appendChild(titleEl);
+
+                ['lecture', 'tutorial', 'practical'].forEach(type => {
+                    const options = courseData[type];
+                    if (!options || options.length === 0) return;
+
+                    const group = document.createElement('div');
+                    group.className = 'build-type-group';
+                    const label = document.createElement('div');
+                    label.className = 'build-type-label';
+                    label.textContent = BUILD_TYPE_LABEL[type];
+                    group.appendChild(label);
+
+                    options.forEach(opt => {
+                        const row = document.createElement('div');
+                        row.className = 'build-section-row';
+                        const labelEl = document.createElement('span');
+                        labelEl.className = 'build-section-label';
+                        labelEl.textContent = BUILD_TYPE_PREFIX[type] + opt.sec;
+                        const metaEl = document.createElement('span');
+                        metaEl.className = 'build-section-meta';
+                        metaEl.textContent = [opt.instructors, opt.room ? 'Room ' + opt.room : ''].filter(Boolean).join(' · ');
+                        row.appendChild(labelEl);
+                        row.appendChild(metaEl);
+
+                        row.onclick = () => {
+                            // Only one selection per type per course — clicking
+                            // the already-selected row deselects it.
+                            group.querySelectorAll('.build-section-row').forEach(r => r.classList.remove('selected'));
+                            if (!buildSelections[code]) buildSelections[code] = {};
+                            const alreadySelected = buildSelections[code][type] && buildSelections[code][type].sec === opt.sec;
+                            if (alreadySelected) {
+                                delete buildSelections[code][type];
+                            } else {
+                                row.classList.add('selected');
+                                buildSelections[code][type] = opt;
+                            }
+                        };
+                        group.appendChild(row);
+                    });
+                    card.appendChild(group);
+                });
+
+                listEl.appendChild(card);
+            });
+        }
+
+        document.getElementById('buildContinueBtn').onclick = () => {
+            const newEntries = [];
+            Object.keys(buildSelections).forEach(code => {
+                const selectedTypes = buildSelections[code];
+                Object.keys(selectedTypes).forEach(type => {
+                    const opt = selectedTypes[type];
+                    newEntries.push({
+                        course: code,
+                        section: BUILD_TYPE_PREFIX[type] + opt.sec,
+                        type: BUILD_TYPE_LABEL[type],
+                        day: '',
+                        time: '',
+                        location: opt.room || ''
+                    });
+                });
+            });
+
+            if (newEntries.length === 0) {
+                toast('Pick at least one section before continuing.', 'error');
+                return;
+            }
+
+            extracted = newEntries;
+            document.getElementById('buildCard').classList.add('hidden');
+            document.getElementById('reviewCard').classList.remove('hidden');
+            setStep('stepReview');
+            renderReview();
+            renderReviewTable();
+            toast('Now add the day and time for each — tap a card to edit it.', 'info');
         };
 
         function switchPanel(panelId) {
@@ -4455,7 +5300,9 @@
             panelAdminUsers: loadAdminUsers,
             panelAdminPosts: loadAdminPosts,
             panelAdminFeedback: loadAdminFeedback,
-            panelAdminFormFields: loadAdminFormFields
+            panelAdminFormFields: loadAdminFormFields,
+            panelAdminNotify: loadAdminNotify,
+            panelAdminCatalog: loadAdminCatalog
         };
 
         function switchAdminPanel(panelId) {
@@ -4491,6 +5338,8 @@
         });
 
         // ---- Home: student directory + filters ----
+        let homeStudentsCache = [];
+
         async function loadHome() {
             const program = document.getElementById('homeFilterProgram').value;
             const semester = document.getElementById('homeFilterSemester').value;
@@ -4500,12 +5349,20 @@
             emptyEl.classList.add('hidden');
 
             const r = await api('listStudents', { program, semester, excludeStudentId: me.studentId });
+            homeStudentsCache = (r.error || !r.students) ? [] : r.students;
+            renderHomeGrid(homeStudentsCache);
+        }
+
+        function renderHomeGrid(students) {
+            const grid = document.getElementById('homeGrid');
+            const emptyEl = document.getElementById('homeEmpty');
             grid.innerHTML = '';
-            if (r.error || !r.students || r.students.length === 0) {
+            if (!students || students.length === 0) {
                 emptyEl.classList.remove('hidden');
                 return;
             }
-            r.students.forEach(s => {
+            emptyEl.classList.add('hidden');
+            students.forEach(s => {
                 const card = document.createElement('div');
                 card.className = 'student-card';
                 const vis = s.timetableVisibility === 'public' ? 'public' : 'private';
@@ -4531,8 +5388,18 @@
                 grid.appendChild(card);
             });
         }
+
         document.getElementById('homeFilterProgram').addEventListener('change', loadHome);
         document.getElementById('homeFilterSemester').addEventListener('change', loadHome);
+
+        // Filters the already-fetched list instantly as you type — no
+        // server round trip needed, since Program/Semester already narrow
+        // it down server-side and this just searches within that.
+        document.getElementById('homeSearch').addEventListener('input', (e) => {
+            const q = e.target.value.trim().toLowerCase();
+            if (!q) { renderHomeGrid(homeStudentsCache); return; }
+            renderHomeGrid(homeStudentsCache.filter(s => (s.name || '').toLowerCase().includes(q)));
+        });
 
         // ---- Profile: view/edit own info ----
         function loadProfilePanel() {
@@ -4552,8 +5419,54 @@
             document.getElementById('idBitsIdPreview').value = me.bitsId || '';
             document.getElementById('idChangeRequestStatus').textContent = '';
 
+            loadCurriculumReference();
             loadOwnPosts();
             loadOwnTrips();
+        }
+
+        // Purely informational — never touches the student's own uploaded
+        // timetable. Empty/hidden gracefully if no admin has imported
+        // curriculum data yet, or if there's nothing on file for this
+        // specific program+semester. This data is sourced from DVM, which
+        // is a TIMETABLE generator, not an official degree-requirement
+        // list — confirmed incomplete for at least one real case (BITS's
+        // own ERP degree audit showed 7 courses for a semester where this
+        // data only had 5), so a caveat is shown every time rather than
+        // presenting it as a complete/authoritative list.
+        async function loadCurriculumReference() {
+            const wrap = document.getElementById('curriculumRefWrap');
+            wrap.innerHTML = '';
+            const r = await api('getBranchCurriculum', { program: me.program, semester: me.semester }, true);
+            if (r.error || !r.courses || r.courses.length === 0) {
+                const note = document.createElement('div');
+                note.className = 'empty-note';
+                note.textContent = 'No reference data on file for your program/semester yet.';
+                wrap.appendChild(note);
+                return;
+            }
+            const caveat = document.createElement('div');
+            caveat.className = 'sub';
+            caveat.style.fontSize = '11.5px';
+            caveat.style.marginBottom = '8px';
+            caveat.textContent = 'This list may be incomplete — check your official degree requirements on ERP for the full picture.';
+            wrap.appendChild(caveat);
+
+            const list = document.createElement('div');
+            list.style.display = 'flex';
+            list.style.flexWrap = 'wrap';
+            list.style.gap = '6px';
+            r.courses.forEach(code => {
+                const chip = document.createElement('span');
+                chip.style.fontFamily = "'IBM Plex Mono', monospace";
+                chip.style.fontSize = '12px';
+                chip.style.padding = '4px 10px';
+                chip.style.background = 'var(--paper)';
+                chip.style.border = '1px solid var(--line)';
+                chip.style.borderRadius = '20px';
+                chip.textContent = code;
+                list.appendChild(chip);
+            });
+            wrap.appendChild(list);
         }
 
         async function loadOwnPosts() {
@@ -5130,6 +6043,8 @@
             document.getElementById('adminUserName').textContent = 'Loading...';
             document.getElementById('adminUserMeta').textContent = '';
             document.getElementById('adminUserStatus').textContent = '';
+            document.getElementById('adminUserMessageInput').value = '';
+            document.getElementById('adminUserMessageStatus').textContent = '';
             document.getElementById('adminUserFavorites').innerHTML = '';
             document.getElementById('adminUserFavoritesEmpty').classList.add('hidden');
             document.getElementById('adminUserTimetableBody').innerHTML = '';
@@ -5237,6 +6152,24 @@
             if (r.error) return;
             toast('User updated.', 'success');
             loadAdminUsers();
+        };
+
+        document.getElementById('adminUserMessageBtn').onclick = async () => {
+            if (!adminUserModalTarget) return;
+            const message = document.getElementById('adminUserMessageInput').value.trim();
+            const statusEl = document.getElementById('adminUserMessageStatus');
+            const btn = document.getElementById('adminUserMessageBtn');
+            if (!message) { toast('Write a message first.', 'error'); return; }
+
+            btn.disabled = true;
+            statusEl.innerHTML = '<span class="spinner"></span>sending...';
+            const r = await api('adminSendNotification', { adminToken, studentId: adminUserModalTarget, message });
+            btn.disabled = false;
+            statusEl.textContent = '';
+            if (r.error) return;
+
+            document.getElementById('adminUserMessageInput').value = '';
+            toast('Message sent.', 'success');
         };
 
         async function loadAdminPosts() {
