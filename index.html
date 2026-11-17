@@ -388,6 +388,34 @@
             font-weight: 600;
         }
 
+        .gen-tt-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .gen-tt-row button {
+            white-space: nowrap;
+        }
+
+        .ics-steps {
+            text-align: left;
+            display: inline-block;
+            margin: 14px auto 6px;
+            padding-left: 22px;
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--muted);
+        }
+
+        .ics-steps b {
+            color: var(--ink, #17181c);
+            font-weight: 600;
+        }
+
         .dropzone-sub {
             font-size: 12px;
             color: var(--muted);
@@ -2496,9 +2524,9 @@
 
             <div id="registerForm">
                 <div class="form-grid">
-                    <div><label>Full name</label><input type="text" id="regName" placeholder="BITS registered name">
+                    <div><label>Full name</label><input type="text" id="regName" autocomplete="off" placeholder="BITS registered name">
                     </div>
-                    <div><label>College email</label><input type="email" id="regEmail" placeholder="you@college.edu">
+                    <div><label>College email</label><input type="email" id="regEmail" autocomplete="off" placeholder="you@college.edu">
                     </div>
                     <div class="full"><label>Program</label>
                         <select id="regProgram">
@@ -2558,13 +2586,13 @@
                     <div class="full" id="customFieldsWrap"></div>
                     <div><label>Password</label>
                         <div class="pw-wrap">
-                            <input type="password" id="regPassword" placeholder="At least 6 characters">
+                            <input type="password" id="regPassword" autocomplete="new-password" placeholder="At least 6 characters">
                             <button type="button" class="pw-toggle" data-target="regPassword" aria-label="Show password">👁</button>
                         </div>
                     </div>
                     <div><label>Confirm password</label>
                         <div class="pw-wrap">
-                            <input type="password" id="regPassword2" placeholder="Re-enter password">
+                            <input type="password" id="regPassword2" autocomplete="new-password" placeholder="Re-enter password">
                             <button type="button" class="pw-toggle" data-target="regPassword2" aria-label="Show password">👁</button>
                         </div>
                     </div>
@@ -2576,7 +2604,7 @@
                     <div class="sub" style="font-size:12px; margin-bottom:8px;">
                         A 6-digit code was sent to your BITS email — enter it to finish creating your account.
                     </div>
-                    <input type="text" id="registerCodeInput" placeholder="6-digit code" maxlength="6" inputmode="numeric">
+                    <input type="text" id="registerCodeInput" autocomplete="one-time-code" placeholder="6-digit code" maxlength="6" inputmode="numeric">
                     <div class="btn-row"><button id="confirmRegisterBtn">Confirm &amp; create account</button></div>
                 </div>
             </div>
@@ -2605,9 +2633,9 @@
                     <div class="btn-row" style="margin-top:0;"><button type="button" id="resetSendBtn" class="ghost">Email me a code</button></div>
                     <div id="resetStep2" class="hidden">
                         <label>Code</label>
-                        <input type="text" id="resetCodeInput" placeholder="6-digit code" maxlength="6" inputmode="numeric">
+                        <input type="text" id="resetCodeInput" autocomplete="one-time-code" placeholder="6-digit code" maxlength="6" inputmode="numeric">
                         <label>New password</label>
-                        <input type="password" id="resetNewPassword" placeholder="At least 6 characters">
+                        <input type="password" id="resetNewPassword" autocomplete="new-password" placeholder="At least 6 characters">
                         <div class="btn-row"><button type="button" id="resetConfirmBtn">Set new password</button></div>
                     </div>
                 </div>
@@ -2615,7 +2643,7 @@
                 <div id="adminOtpPanel" class="hidden" style="margin-top:16px;">
                     <label>Admin sign-in code</label>
                     <div class="sub" id="adminOtpHint" style="font-size:12px; margin-bottom:8px;">A 6-digit code was emailed to you.</div>
-                    <input type="text" id="adminOtpInput" placeholder="6-digit code" maxlength="6" inputmode="numeric">
+                    <input type="text" id="adminOtpInput" autocomplete="one-time-code" placeholder="6-digit code" maxlength="6" inputmode="numeric">
                     <div class="btn-row"><button id="adminOtpSubmitBtn">Verify</button></div>
                 </div>
             </div>
@@ -2626,11 +2654,22 @@
 
         <!-- STEP 2: UPLOAD -->
         <div class="card hidden" data-step="02 — Upload" id="uploadCard">
-            <label>Your timetable calendar file (.ics)</label>
+            <div class="gen-tt-row">
+                <div>
+                    <label style="margin-bottom:4px;">Your timetable calendar file (.ics)</label>
+                    <div class="sub" style="margin:0; font-size:13px;">No file yet? Make your timetable on the DVM site first.</div>
+                </div>
+                <button type="button" id="generateTtBtn">Generate timetable ↗</button>
+            </div>
             <div class="dropzone" id="dropzone">
                 <div id="dropzoneEmpty">
                     <div class="dropzone-icon">⇧</div>
                     <div class="dropzone-text">Drag &amp; drop your .ics file here, or click to browse</div>
+                    <ol class="ics-steps">
+                        <li>Click <b>Generate timetable</b> and build your timetable on the DVM site.</li>
+                        <li>On that site, click <b>Export</b> and download the <b>.ics</b> file.</li>
+                        <li>Come back here and upload that .ics file.</li>
+                    </ol>
                     <div class="dropzone-sub">Courses, class times, rooms and instructors are read straight from it</div>
                 </div>
                 <div id="dropzonePreviewGrid" class="hidden dropzone-preview-grid"></div>
@@ -3283,7 +3322,7 @@
 
     <script>
         // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE:
-        const API_URL = "https://script.google.com/macros/s/AKfycbyovay1RMW8Wo-g1EHA-vc0z53136WlDY6952drXwfCmhZ_Ael-MaJyJLyeJc03SMhKEw/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbxjWUCvcie9pvimgKbjYal8G-w6BJa34XQr1lpUQ0nlRtuk7-oS5EYzhU9F6-HTHTgMyg/exec";
 
         // The app's top bar is sticky but its height isn't fixed by CSS
         // (it's padding + content driven, so it can shift slightly with
@@ -3498,7 +3537,33 @@
             return !!(r && r.error) && (TRANSPORT_ERRORS.includes(r.error) || /^http_/.test(r.error));
         }
 
+        // Empties every box on the Login / Register card and closes the
+        // reset-password, admin-code and registration-code panels, so a
+        // name, email or code never stays on screen after it was used.
+        function resetAuthForms() {
+            document.querySelectorAll('#authCard input').forEach(el => {
+                if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+                else if (el.type !== 'button' && el.type !== 'submit') el.value = '';
+            });
+            document.querySelectorAll('#authCard select').forEach(el => { el.selectedIndex = 0; });
+            document.querySelectorAll('#authCard textarea').forEach(el => { el.value = ''; });
+            ['resetPanel', 'resetStep2', 'adminOtpPanel', 'registerCodeWrap', 'beProgramWrap'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+            document.getElementById('loginErr').textContent = '';
+            document.getElementById('loginStatus').textContent = '';
+        }
+
+        function closeResetPanel() {
+            document.getElementById('resetPanel').classList.add('hidden');
+            document.getElementById('resetStep2').classList.add('hidden');
+            document.getElementById('resetCodeInput').value = '';
+            document.getElementById('resetNewPassword').value = '';
+        }
+
         function showAuthTab(tab) {
+            closeResetPanel();
             const isReg = tab === 'register';
             document.getElementById('registerForm').classList.toggle('hidden', !isReg);
             document.getElementById('loginForm').classList.toggle('hidden', isReg);
@@ -3943,8 +4008,7 @@
             me.beProgram = r.beProgram || '';
             me.timetableVisibility = r.timetableVisibility || 'private';
             saveSession(me.studentId, r.sessionToken);
-            document.getElementById('registerCodeWrap').classList.add('hidden');
-            document.getElementById('registerCodeInput').value = '';
+            resetAuthForms();
             toast('Registered successfully.', 'success'); startHeartbeat();
             enterApp();
         };
@@ -3955,6 +4019,12 @@
         // selected image is OCR'd independently and the results are merged
         // (see mergeClasses below), so parts can be uploaded together or
         // added one at a time without overwriting what's already selected.
+        // Opens the DVM timetable builder in a new tab; the student builds
+        // the timetable there, exports the .ics and uploads it here.
+        document.getElementById('generateTtBtn').onclick = () => {
+            window.open('https://timetable.bits-dvm.org', '_blank', 'noopener,noreferrer');
+        };
+
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
         const dropzoneEmpty = document.getElementById('dropzoneEmpty');
@@ -4059,6 +4129,7 @@
 
             if (!email) { errEl.textContent = 'Enter your BITS email.'; return; }
             if (!password) { errEl.textContent = 'Enter your password.'; return; }
+            closeResetPanel();
             const looksLikeStudent = /^f\d{7,8}@pilani\.bits-pilani\.ac\.in$/i.test(email);
 
             btn.disabled = true;
@@ -4106,8 +4177,7 @@
             const tt = await api('getTimetable', { studentId: me.studentId });
             statusEl.textContent = '';
             btn.disabled = false;
-            document.getElementById('loginPassword').value = '';
-            document.getElementById('resetPanel').classList.add('hidden');
+            resetAuthForms();
             if (tt.timetable && tt.timetable.length > 0) {
                 extracted = tt.timetable;
                 document.getElementById('authCard').classList.add('hidden');
@@ -4124,8 +4194,9 @@
         // ---- Forgot password: emailed 6-digit code, then a new password ----
         document.getElementById('forgotPwLink').onclick = () => {
             document.getElementById('adminOtpPanel').classList.add('hidden');
-            document.getElementById('resetPanel').classList.toggle('hidden');
-            document.getElementById('resetStep2').classList.add('hidden');
+            const wasOpen = !document.getElementById('resetPanel').classList.contains('hidden');
+            closeResetPanel();
+            if (!wasOpen) document.getElementById('resetPanel').classList.remove('hidden');
             document.getElementById('loginErr').textContent = '';
         };
 
@@ -4143,11 +4214,12 @@
             btn.disabled = false;
             if (r.error) {
                 errEl.textContent = isTransportError(r) ? 'Could not reach the server. Try again.' : scrubEmails(r.error);
+                if (r.notRegistered) closeResetPanel();
                 return;
             }
             document.getElementById('resetStep2').classList.remove('hidden');
             document.getElementById('resetCodeInput').focus();
-            toast('If that email has an account, a reset code is on its way.', 'success');
+            toast('A reset code has been sent to your BITS email.', 'success');
         };
 
         document.getElementById('resetConfirmBtn').onclick = async () => {
@@ -4166,9 +4238,7 @@
                 errEl.textContent = isTransportError(r) ? 'Could not reach the server. Try again.' : scrubEmails(r.error);
                 return;
             }
-            document.getElementById('resetPanel').classList.add('hidden');
-            document.getElementById('resetCodeInput').value = '';
-            document.getElementById('resetNewPassword').value = '';
+            closeResetPanel();
             document.getElementById('loginPassword').value = '';
             document.getElementById('loginPassword').focus();
             toast('Password changed — log in with the new one.', 'success');
@@ -4202,6 +4272,9 @@
             }
         }
         document.getElementById('loginBitsId').addEventListener('input', syncAdminOtpVisibility);
+        document.getElementById('loginBitsId').addEventListener('input', () => {
+            if (!document.getElementById('resetStep2').classList.contains('hidden')) closeResetPanel();
+        });
         document.getElementById('loginPassword').addEventListener('input', syncAdminOtpVisibility);
 
         // Wraps the browser's geolocation prompt in a Promise. If the
@@ -4288,7 +4361,7 @@
             me = { studentId: 'ADMIN', name: 'Admin', program: '', semester: '', beProgram: '', club: '', sport: '', fieldOfInterest: '', timetableVisibility: 'private' };
             document.getElementById('adminOtpInput').value = '';
             document.getElementById('loginPassword').value = '';
-            document.getElementById('adminOtpPanel').classList.add('hidden');
+            resetAuthForms();
             openAdminShell();
             toast('Admin access granted.', 'success');
         };
@@ -4381,9 +4454,7 @@
             document.getElementById('notificationBanners').innerHTML = '';
             document.getElementById('stepIndicator').classList.remove('hidden');
             document.getElementById('authCard').classList.remove('hidden');
-            document.getElementById('regPassword').value = '';
-            document.getElementById('regPassword2').value = '';
-            document.getElementById('loginPassword').value = '';
+            resetAuthForms();
             showAuthTab('login');
             setStep('stepAccount');
             toast(message || 'Logged out.', toastType || 'info');
