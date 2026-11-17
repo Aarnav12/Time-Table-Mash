@@ -987,6 +987,136 @@
             border-radius: 0 6px 6px 0;
         }
 
+        /* ---- Messages ---- */
+        /* :not(.hidden) so the shared .hidden rule, which is defined
+           earlier in this stylesheet, still wins when the badge is off. */
+        .nav-badge:not(.hidden) {
+            display: inline-block;
+        }
+
+        .nav-badge {
+            min-width: 18px;
+            margin-left: auto;
+            padding: 1px 6px;
+            border-radius: 9px;
+            background: var(--amber-deep);
+            color: #fff;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10.5px;
+            line-height: 16px;
+            text-align: center;
+        }
+
+        .conv-row {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            width: 100%;
+            text-align: left;
+            padding: 12px 14px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--card);
+            cursor: pointer;
+            margin-bottom: 8px;
+            font: inherit;
+            color: inherit;
+        }
+
+        .conv-row:hover {
+            border-color: var(--amber);
+        }
+
+        .conv-row.unread {
+            border-left: 3px solid var(--amber-deep);
+        }
+
+        .conv-name {
+            font-weight: 600;
+            font-size: 14.5px;
+            white-space: nowrap;
+        }
+
+        .conv-last {
+            flex: 1;
+            font-size: 13px;
+            color: var(--muted);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .conv-count {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10.5px;
+            background: var(--amber-deep);
+            color: #fff;
+            border-radius: 9px;
+            padding: 1px 6px;
+        }
+
+        .chat-scroll {
+            max-height: 48vh;
+            overflow-y: auto;
+            padding: 4px 2px;
+            margin-bottom: 12px;
+        }
+
+        .chat-bubble {
+            width: fit-content;
+            max-width: 78%;
+            padding: 9px 13px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .chat-bubble.theirs {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-bottom-left-radius: 3px;
+        }
+
+        .chat-bubble.mine {
+            background: rgba(47, 111, 102, 0.12);
+            border: 1px solid rgba(47, 111, 102, 0.3);
+            border-bottom-right-radius: 3px;
+            margin-left: auto;
+        }
+
+        .chat-when {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        .chat-bubble.mine .chat-when {
+            text-align: right;
+        }
+
+        .profile-email-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding: 11px 14px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper);
+        }
+
+        .profile-email-row a {
+            font-size: 13.5px;
+            color: var(--teal);
+            overflow-wrap: anywhere;
+        }
+
         #notificationBanners {
             display: flex;
             flex-direction: column;
@@ -2732,6 +2862,7 @@
                     <button data-panel="panelViewInterest"><span class="nav-icon">☰</span>View interest</button>
                     <button data-panel="panelFavorites"><span class="nav-icon">★</span>Favourite interest</button>
                     <button data-panel="panelGoing"><span class="nav-icon">✈</span>Going</button>
+                    <button data-panel="panelMessages"><span class="nav-icon">▭</span>Messages<span class="nav-badge hidden" id="msgNavBadge">0</span></button>
                     <button data-panel="panelFeedback"><span class="nav-icon">✉</span>Feedback</button>
                 </nav>
 
@@ -2964,6 +3095,28 @@
                     </div>
 
                     <!-- FEEDBACK -->
+                    <div class="dash-panel" id="panelMessages">
+                        <div class="card" data-step="Messages">
+                            <div id="msgListView">
+                                <h1 style="font-size:20px;">Messages</h1>
+                                <div class="sub" style="margin-bottom:14px;">Chats with classmates you found here. Open anyone's profile to start a new one.</div>
+                                <div id="convListWrap"></div>
+                            </div>
+
+                            <div id="msgChatView" class="hidden">
+                                <div class="btn-row" style="justify-content:flex-start; margin-bottom:6px;">
+                                    <button id="backToConvList" class="ghost">← All messages</button>
+                                </div>
+                                <h1 style="font-size:20px;" id="chatWithName"></h1>
+                                <div class="sub" style="margin-bottom:14px;" id="chatWithEmail"></div>
+                                <div class="chat-scroll" id="chatScroll"></div>
+                                <textarea id="chatInput" placeholder="Write a message..." maxlength="1000"></textarea>
+                                <div class="btn-row" style="justify-content:flex-end;"><button id="chatSendBtn">Send</button></div>
+                                <div class="status" id="chatStatus"></div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="dash-panel" id="panelFeedback">
                         <div class="card" data-step="Feedback">
                             <h1 style="font-size:20px;">Feedback</h1>
@@ -3258,6 +3411,14 @@
 
             <div id="profileFieldsWrap" style="margin-bottom:18px;"></div>
 
+            <div class="profile-email-row hidden" id="profileContactRow">
+                <div>
+                    <div class="profile-field-label">Email</div>
+                    <a id="profileEmailLink" href="#"></a>
+                </div>
+                <button type="button" id="profileMessageBtn">Message</button>
+            </div>
+
             <label style="margin-top:0;">Going</label>
             <div id="profileTripsWrap" style="margin-top:8px; margin-bottom:22px;"></div>
 
@@ -3454,7 +3615,8 @@
             'getFormConfig', 'getCourseCatalog', 'getSectionOptions', 'getSectionsByTitle', 'getCourseDataStatus',
             'getBranchCurriculum', 'getMatches', 'getProfile', 'getTimetable', 'listStudents', 'listInterests',
             'listFavorites', 'getUserPosts', 'listComments', 'listTrips', 'getUserTrips', 'getMyNotifications',
-            'adminListStudents', 'adminListLoginAttempts', 'adminListPosts', 'adminListFeedback'
+            'adminListStudents', 'adminListLoginAttempts', 'adminListPosts', 'adminListFeedback',
+            'listConversations', 'getConversation', 'getUnreadCount'
         ]);
         const API_TIMEOUT_MS = 30000;
 
@@ -4438,6 +4600,11 @@
         // clears everything, instead of two slightly different copies.
         function performLogout(message, toastType, skipServer) {
             if (heartbeatInterval) { clearInterval(heartbeatInterval); heartbeatInterval = null; }
+            stopUnreadPoll();
+            showConvList();
+            document.getElementById('convListWrap').innerHTML = '';
+            document.getElementById('chatScroll').innerHTML = '';
+            document.getElementById('chatInput').value = '';
             // Tell the server to forget this login too (fire-and-forget; the
             // request captures the token before clearSession wipes it).
             if (!skipServer && sessionToken) api('logout', {}, true);
@@ -5392,6 +5559,22 @@
             }
             if (fieldGrid.children.length > 0) fieldsWrap.appendChild(fieldGrid);
 
+            // Email + Message are only offered on somebody else's profile;
+            // on your own there is nobody to write to.
+            const contactRow = document.getElementById('profileContactRow');
+            const emailLink = document.getElementById('profileEmailLink');
+            if (r.email && studentId !== me.studentId) {
+                emailLink.textContent = r.email;
+                emailLink.href = 'mailto:' + r.email;
+                document.getElementById('profileMessageBtn').onclick = () => {
+                    closeModal(document.getElementById('profileModal'));
+                    openChatWith(studentId, r.name);
+                };
+                contactRow.classList.remove('hidden');
+            } else {
+                contactRow.classList.add('hidden');
+            }
+
             document.getElementById('profilePostsName').textContent = r.name;
             loadProfilePosts(studentId);
             loadProfileTrips(studentId);
@@ -5463,6 +5646,8 @@
             loadHome();
             loadProfilePanel();
             loadNotifications();
+            refreshUnread();
+            startUnreadPoll();
         }
 
         // Shown on every visit — a fresh check runs each time
@@ -5650,6 +5835,7 @@
             if (panelId === 'panelFavorites') loadFavorites();
             if (panelId === 'panelTimetable') renderTimetable();
             if (panelId === 'panelGoing') loadTripsFeed();
+            if (panelId === 'panelMessages') { showConvList(); loadConversations(); }
         }
 
         // Admin is a fully separate screen — its own nav, its own panel
@@ -6281,6 +6467,202 @@
                 }
             }, 4 * 60 * 1000);
         }
+
+
+        // ---- Messages: conversation list + one-to-one chat ----
+        // Apps Script has no push, so the badge is refreshed on a timer
+        // and whenever a chat screen is opened. Nothing here polls while
+        // the tab is in the background.
+        let chatWith = null;          // { studentId, name } of the open thread
+        let unreadPollInterval = null;
+
+        function fmtChatTime(v) {
+            if (!v) return '';
+            const d = new Date(v);
+            if (isNaN(d.getTime())) return '';
+            const today = new Date();
+            const sameDay = d.toDateString() === today.toDateString();
+            const time = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+            return sameDay ? time : d.toLocaleDateString([], { day: 'numeric', month: 'short' }) + ' · ' + time;
+        }
+
+        function setUnreadBadge(n) {
+            const badge = document.getElementById('msgNavBadge');
+            if (!badge) return;
+            if (n > 0) {
+                badge.textContent = n > 99 ? '99+' : String(n);
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        async function refreshUnread() {
+            if (!me.studentId || me.studentId === 'ADMIN') return;
+            const r = await api('getUnreadCount', { studentId: me.studentId }, true);
+            if (!r || r.error) return;
+            setUnreadBadge(r.unread || 0);
+        }
+
+        function startUnreadPoll() {
+            if (unreadPollInterval) return;
+            unreadPollInterval = setInterval(() => {
+                if (document.hidden) return;
+                refreshUnread();
+            }, 60 * 1000);
+        }
+
+        function stopUnreadPoll() {
+            if (unreadPollInterval) clearInterval(unreadPollInterval);
+            unreadPollInterval = null;
+            setUnreadBadge(0);
+        }
+
+        function showConvList() {
+            chatWith = null;
+            document.getElementById('msgChatView').classList.add('hidden');
+            document.getElementById('msgListView').classList.remove('hidden');
+        }
+
+        async function loadConversations() {
+            const wrap = document.getElementById('convListWrap');
+            wrap.textContent = 'Loading…';
+            const r = await api('listConversations', { studentId: me.studentId }, true);
+            wrap.innerHTML = '';
+            if (!r || r.error) {
+                const p = document.createElement('div');
+                p.className = 'empty-note';
+                p.textContent = 'Could not load your messages. Try again in a moment.';
+                wrap.appendChild(p);
+                return;
+            }
+            const list = r.conversations || [];
+            if (list.length === 0) {
+                const p = document.createElement('div');
+                p.className = 'empty-note';
+                p.textContent = 'No messages yet. Find a classmate on Home or in a shared class, open their profile and hit Message.';
+                wrap.appendChild(p);
+                setUnreadBadge(0);
+                return;
+            }
+            let totalUnread = 0;
+            list.forEach(c => {
+                totalUnread += c.unread || 0;
+                const row = document.createElement('button');
+                row.type = 'button';
+                row.className = 'conv-row' + (c.unread ? ' unread' : '');
+
+                const nameEl = document.createElement('span');
+                nameEl.className = 'conv-name';
+                nameEl.textContent = c.name;
+
+                const lastEl = document.createElement('span');
+                lastEl.className = 'conv-last';
+                lastEl.textContent = (c.mine ? 'You: ' : '') + (c.lastText || '');
+
+                row.appendChild(nameEl);
+                row.appendChild(lastEl);
+                if (c.unread) {
+                    const n = document.createElement('span');
+                    n.className = 'conv-count';
+                    n.textContent = String(c.unread);
+                    row.appendChild(n);
+                }
+                row.onclick = () => openChatWith(c.studentId, c.name);
+                wrap.appendChild(row);
+            });
+            setUnreadBadge(totalUnread);
+        }
+
+        function renderChat(r) {
+            const scroll = document.getElementById('chatScroll');
+            scroll.innerHTML = '';
+            const msgs = (r && r.messages) || [];
+            if (msgs.length === 0) {
+                const p = document.createElement('div');
+                p.className = 'empty-note';
+                p.textContent = 'No messages yet — say hello.';
+                scroll.appendChild(p);
+                return;
+            }
+            msgs.forEach(m => {
+                const b = document.createElement('div');
+                b.className = 'chat-bubble ' + (m.mine ? 'mine' : 'theirs');
+                const t = document.createElement('div');
+                t.textContent = m.text; // textContent, never innerHTML
+                b.appendChild(t);
+                const when = document.createElement('div');
+                when.className = 'chat-when';
+                when.textContent = fmtChatTime(m.createdAt);
+                b.appendChild(when);
+                scroll.appendChild(b);
+            });
+            scroll.scrollTop = scroll.scrollHeight;
+        }
+
+        async function openChatWith(studentId, name) {
+            if (!studentId || studentId === me.studentId) return;
+            // switchPanel resets to the list view (and clears chatWith),
+            // so the thread is selected only after that has run.
+            switchPanel('panelMessages');
+            chatWith = { studentId: studentId, name: name || '' };
+            document.getElementById('msgListView').classList.add('hidden');
+            document.getElementById('msgChatView').classList.remove('hidden');
+            document.getElementById('chatWithName').textContent = chatWith.name || 'Chat';
+            document.getElementById('chatWithEmail').textContent = '';
+            document.getElementById('chatStatus').textContent = '';
+            document.getElementById('chatInput').value = '';
+            document.getElementById('chatScroll').textContent = 'Loading…';
+
+            const r = await api('getConversation', { studentId: me.studentId, withStudentId: studentId }, true);
+            if (!r || r.error) {
+                document.getElementById('chatScroll').textContent = 'Could not load this conversation.';
+                return;
+            }
+            if (r.name) {
+                chatWith.name = r.name;
+                document.getElementById('chatWithName').textContent = r.name;
+            }
+            document.getElementById('chatWithEmail').textContent = r.gone
+                ? 'This account is no longer active.'
+                : (r.email || '');
+            renderChat(r);
+            refreshUnread();
+        }
+
+        document.getElementById('backToConvList').onclick = () => {
+            showConvList();
+            loadConversations();
+        };
+
+        document.getElementById('chatSendBtn').onclick = async () => {
+            if (!chatWith) return;
+            const input = document.getElementById('chatInput');
+            const statusEl = document.getElementById('chatStatus');
+            const text = input.value.trim();
+            if (!text) {
+                statusEl.textContent = 'Write something first.';
+                return;
+            }
+            statusEl.textContent = 'Sending…';
+            const r = await api('sendMessage', { studentId: me.studentId, toStudentId: chatWith.studentId, text });
+            if (!r || r.error) {
+                statusEl.textContent = (r && r.error) ? r.error : 'Could not send that. Try again.';
+                return;
+            }
+            input.value = '';
+            statusEl.textContent = '';
+            const conv = await api('getConversation', { studentId: me.studentId, withStudentId: chatWith.studentId }, true);
+            if (conv && !conv.error) renderChat(conv);
+        };
+
+        document.getElementById('chatInput').addEventListener('keydown', (e) => {
+            // Enter sends, Shift+Enter makes a new line.
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById('chatSendBtn').click();
+            }
+        });
 
         async function loadAdminOverview() {
             const noteEl = document.getElementById('adminOverviewNote');
