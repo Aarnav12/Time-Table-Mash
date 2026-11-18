@@ -9,7 +9,8 @@
          Google Fonts, and may send data only to its own Apps Script backend.
          Even if some script were ever injected into the page, it could not
          ship anyone's session or data off to another server. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src https://script.google.com https://script.googleusercontent.com https://*.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src https://script.google.com https://script.googleusercontent.com https://*.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'">
     <meta name="referrer" content="no-referrer">
     <!-- Casual-snooping deterrent only — see block-devtools.js itself for
          exactly what this does and doesn't protect against. Must be
@@ -33,7 +34,7 @@
             --muted: #6f6b60;
             --radius: 10px;
             --shadow: 0 1px 2px rgba(23, 24, 28, 0.04), 0 8px 24px rgba(23, 24, 28, 0.05);
-            --shadow-neumorphic: 
+            --shadow-neumorphic:
                 0 10px 30px rgba(23, 24, 28, 0.08),
                 inset 0 2px 4px rgba(255, 255, 255, 0.6),
                 inset 0 -2px 4px rgba(23, 24, 28, 0.05);
@@ -204,7 +205,11 @@
             z-index: 0;
         }
 
-        .topbar, .wrap, .dashboard-shell, #dashboardShell, .modal-overlay {
+        .topbar,
+        .wrap,
+        .dashboard-shell,
+        #dashboardShell,
+        .modal-overlay {
             position: relative;
             z-index: 1;
         }
@@ -243,8 +248,17 @@
         }
 
         @keyframes flowDrift {
-            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; }
-            50% { transform: translateY(-14px) translateX(10px); opacity: 0.4; }
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0.2;
+            }
+
+            50% {
+                transform: translateY(-14px) translateX(10px);
+                opacity: 0.4;
+            }
         }
 
         .card::before {
@@ -310,7 +324,7 @@
         select:focus {
             outline: none;
             border-color: var(--amber);
-            box-shadow: 
+            box-shadow:
                 0 0 0 4px rgba(232, 163, 61, 0.15),
                 inset 0 2px 6px rgba(232, 163, 61, 0.08);
         }
@@ -527,7 +541,9 @@
 
         button:active {
             transform: translateY(0px);
-        }        button:active {
+        }
+
+        button:active {
             transform: scale(0.98);
         }
 
@@ -894,8 +910,13 @@
         }
 
         @keyframes overlayIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .modal {
@@ -914,8 +935,15 @@
         }
 
         @keyframes modalIn {
-            from { opacity: 0; transform: translateY(8px) scale(.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(8px) scale(.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .modal h3 {
@@ -1272,7 +1300,9 @@
         }
 
         @keyframes fadeInSlow {
-            to { opacity: 1; }
+            to {
+                opacity: 1;
+            }
         }
 
         /* ---------- Dashboard shell ---------- */
@@ -1297,8 +1327,15 @@
         }
 
         @keyframes panelIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .dash-nav {
@@ -1682,6 +1719,50 @@
             margin-top: 2px;
         }
 
+        /* ---- Help / feedback before sign-in ---- */
+        .auth-help {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--line);
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .auth-help a {
+            color: inherit;
+            font-weight: 600;
+        }
+
+        .auth-help.card {
+            margin-top: 18px;
+            padding: 14px 20px;
+            border-top: 1px solid var(--line);
+        }
+
+        body.app-mode .auth-help {
+            display: none;
+        }
+
+        .help-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .help-actions a {
+            text-decoration: none;
+        }
+
+        footer a {
+            color: inherit;
+        }
+
         footer {
             text-align: center;
             color: var(--muted);
@@ -2027,52 +2108,109 @@
            and respond instead of just appearing.
            ================================================================= */
         @keyframes riseIn {
-            from { opacity: 0; transform: translateY(14px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes popIn {
-            from { opacity: 0; transform: scale(0.92); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.92);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         @keyframes dropIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes shimmer {
-            from { background-position: 120% 0; }
-            to { background-position: -120% 0; }
+            from {
+                background-position: 120% 0;
+            }
+
+            to {
+                background-position: -120% 0;
+            }
         }
 
         @keyframes busyBar {
-            from { background-position: -45% 0; }
-            to { background-position: 145% 0; }
+            from {
+                background-position: -45% 0;
+            }
+
+            to {
+                background-position: 145% 0;
+            }
         }
 
         @keyframes toastOut {
-            to { opacity: 0; transform: translateX(18px) scale(0.97); }
+            to {
+                opacity: 0;
+                transform: translateX(18px) scale(0.97);
+            }
         }
 
         @keyframes overlayOut {
-            to { opacity: 0; }
+            to {
+                opacity: 0;
+            }
         }
 
         @keyframes modalOut {
-            to { opacity: 0; transform: translateY(8px) scale(0.98); }
+            to {
+                opacity: 0;
+                transform: translateY(8px) scale(0.98);
+            }
         }
 
         @keyframes favPop {
-            0% { transform: scale(1); }
-            45% { transform: scale(1.18); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            45% {
+                transform: scale(1.18);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         @keyframes markTurn {
-            0%, 70% { transform: rotate(45deg); }
-            85% { transform: rotate(225deg) scale(1.15); }
-            100% { transform: rotate(225deg); }
+
+            0%,
+            70% {
+                transform: rotate(45deg);
+            }
+
+            85% {
+                transform: rotate(225deg) scale(1.15);
+            }
+
+            100% {
+                transform: rotate(225deg);
+            }
         }
 
         .topbar {
@@ -2112,10 +2250,15 @@
             animation: riseIn .6s cubic-bezier(.2, .8, .2, 1) backwards;
         }
 
-        .hero h1 { animation-delay: .07s; }
-        .hero .sub { animation-delay: .14s; }
+        .hero h1 {
+            animation-delay: .07s;
+        }
 
-        main > .card:not(.hidden) {
+        .hero .sub {
+            animation-delay: .14s;
+        }
+
+        main>.card:not(.hidden) {
             animation: riseIn .5s cubic-bezier(.2, .8, .2, 1) backwards;
             animation-delay: .12s;
         }
@@ -2145,7 +2288,7 @@
             animation: panelIn .4s cubic-bezier(.2, .8, .2, 1) backwards;
         }
 
-        .dash-panel.active > .card:nth-child(2) {
+        .dash-panel.active>.card:nth-child(2) {
             animation: riseIn .5s cubic-bezier(.2, .8, .2, 1) backwards;
             animation-delay: .08s;
         }
@@ -2164,12 +2307,47 @@
             animation-delay: calc(var(--i, 0) * 20ms);
         }
 
-        .post-card:nth-child(2), .class-card:nth-child(2), .match-row:nth-child(2), .admin-stat-card:nth-child(2), .build-course-card:nth-child(2) { animation-delay: .05s; }
-        .post-card:nth-child(3), .class-card:nth-child(3), .match-row:nth-child(3), .admin-stat-card:nth-child(3), .build-course-card:nth-child(3) { animation-delay: .1s; }
-        .post-card:nth-child(4), .class-card:nth-child(4), .match-row:nth-child(4), .admin-stat-card:nth-child(4), .build-course-card:nth-child(4) { animation-delay: .15s; }
-        .post-card:nth-child(5), .class-card:nth-child(5), .match-row:nth-child(5) { animation-delay: .2s; }
-        .post-card:nth-child(6), .class-card:nth-child(6), .match-row:nth-child(6) { animation-delay: .24s; }
-        .post-card:nth-child(n+7), .class-card:nth-child(n+7), .match-row:nth-child(n+7) { animation-delay: .28s; }
+        .post-card:nth-child(2),
+        .class-card:nth-child(2),
+        .match-row:nth-child(2),
+        .admin-stat-card:nth-child(2),
+        .build-course-card:nth-child(2) {
+            animation-delay: .05s;
+        }
+
+        .post-card:nth-child(3),
+        .class-card:nth-child(3),
+        .match-row:nth-child(3),
+        .admin-stat-card:nth-child(3),
+        .build-course-card:nth-child(3) {
+            animation-delay: .1s;
+        }
+
+        .post-card:nth-child(4),
+        .class-card:nth-child(4),
+        .match-row:nth-child(4),
+        .admin-stat-card:nth-child(4),
+        .build-course-card:nth-child(4) {
+            animation-delay: .15s;
+        }
+
+        .post-card:nth-child(5),
+        .class-card:nth-child(5),
+        .match-row:nth-child(5) {
+            animation-delay: .2s;
+        }
+
+        .post-card:nth-child(6),
+        .class-card:nth-child(6),
+        .match-row:nth-child(6) {
+            animation-delay: .24s;
+        }
+
+        .post-card:nth-child(n+7),
+        .class-card:nth-child(n+7),
+        .match-row:nth-child(n+7) {
+            animation-delay: .28s;
+        }
 
         .tt-class-tile {
             animation: popIn .36s cubic-bezier(.2, .9, .3, 1.25) backwards;
@@ -2239,8 +2417,14 @@
             cursor: default;
         }
 
-        .skeleton.sk-card { height: 88px; }
-        .skeleton.sk-post { height: 104px; margin-bottom: 12px; }
+        .skeleton.sk-card {
+            height: 88px;
+        }
+
+        .skeleton.sk-post {
+            height: 104px;
+            margin-bottom: 12px;
+        }
 
 
         /* =================================================================
@@ -2263,7 +2447,9 @@
         }
 
         @keyframes growLine {
-            to { width: 92px; }
+            to {
+                width: 92px;
+            }
         }
 
         .eyebrow::before {
@@ -2297,13 +2483,27 @@
         }
 
         @keyframes artIn {
-            from { opacity: 0; transform: translateY(-38%) rotate(-10deg) scale(.9); }
-            to { opacity: 1; transform: translateY(-50%) rotate(-4deg) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(-38%) rotate(-10deg) scale(.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(-50%) rotate(-4deg) scale(1);
+            }
         }
 
         @keyframes artFloat {
-            0%, 100% { transform: translateY(-50%) rotate(-4deg); }
-            50% { transform: translateY(calc(-50% - 9px)) rotate(-2.5deg); }
+
+            0%,
+            100% {
+                transform: translateY(-50%) rotate(-4deg);
+            }
+
+            50% {
+                transform: translateY(calc(-50% - 9px)) rotate(-2.5deg);
+            }
         }
 
         .hero-art span {
@@ -2326,19 +2526,50 @@
             animation: tileGlowAmber 2.8s ease-in-out infinite;
         }
 
-        .hero-art span:nth-child(3n) { animation-delay: .7s; }
-        .hero-art span:nth-child(4n+1) { animation-delay: 1.5s; }
-        .hero-art span:nth-child(5n+2) { animation-delay: 2.4s; }
-        .hero-art span.m { animation-delay: 0s; }
+        .hero-art span:nth-child(3n) {
+            animation-delay: .7s;
+        }
+
+        .hero-art span:nth-child(4n+1) {
+            animation-delay: 1.5s;
+        }
+
+        .hero-art span:nth-child(5n+2) {
+            animation-delay: 2.4s;
+        }
+
+        .hero-art span.m {
+            animation-delay: 0s;
+        }
 
         @keyframes tileGlowTeal {
-            0%, 100% { background: rgba(47, 111, 102, 0.08); transform: scale(1); }
-            50% { background: rgba(47, 111, 102, 0.22); transform: scale(1.04); }
+
+            0%,
+            100% {
+                background: rgba(47, 111, 102, 0.08);
+                transform: scale(1);
+            }
+
+            50% {
+                background: rgba(47, 111, 102, 0.22);
+                transform: scale(1.04);
+            }
         }
 
         @keyframes tileGlowAmber {
-            0%, 100% { background: rgba(232, 163, 61, 0.14); box-shadow: 0 0 0 0 rgba(232, 163, 61, 0); transform: scale(1); }
-            50% { background: rgba(232, 163, 61, 0.38); box-shadow: 0 0 0 6px rgba(232, 163, 61, 0.12); transform: scale(1.07); }
+
+            0%,
+            100% {
+                background: rgba(232, 163, 61, 0.14);
+                box-shadow: 0 0 0 0 rgba(232, 163, 61, 0);
+                transform: scale(1);
+            }
+
+            50% {
+                background: rgba(232, 163, 61, 0.38);
+                box-shadow: 0 0 0 6px rgba(232, 163, 61, 0.12);
+                transform: scale(1.07);
+            }
         }
 
         /* Small amber/teal diamonds drifting around it (the brand mark). */
@@ -2352,13 +2583,41 @@
             animation: diamondDrift 6s ease-in-out infinite;
         }
 
-        .hero-art i:nth-of-type(1) { top: -14px; left: 22px; }
-        .hero-art i:nth-of-type(2) { bottom: -12px; right: 34px; background: var(--teal); width: 7px; height: 7px; animation-delay: -2s; }
-        .hero-art i:nth-of-type(3) { top: 40%; left: -18px; background: var(--amber-deep); width: 6px; height: 6px; animation-delay: -4s; }
+        .hero-art i:nth-of-type(1) {
+            top: -14px;
+            left: 22px;
+        }
+
+        .hero-art i:nth-of-type(2) {
+            bottom: -12px;
+            right: 34px;
+            background: var(--teal);
+            width: 7px;
+            height: 7px;
+            animation-delay: -2s;
+        }
+
+        .hero-art i:nth-of-type(3) {
+            top: 40%;
+            left: -18px;
+            background: var(--amber-deep);
+            width: 6px;
+            height: 6px;
+            animation-delay: -4s;
+        }
 
         @keyframes diamondDrift {
-            0%, 100% { transform: translateY(0) rotate(45deg); opacity: .75; }
-            50% { transform: translateY(-12px) rotate(225deg); opacity: .35; }
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(45deg);
+                opacity: .75;
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(225deg);
+                opacity: .35;
+            }
         }
 
         /* ---- the card itself ---- */
@@ -2367,8 +2626,15 @@
         }
 
         @keyframes authCardIn {
-            from { opacity: 0; transform: translateY(26px) scale(.975); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(26px) scale(.975);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         /* Soft amber light that follows the pointer across the card. */
@@ -2444,31 +2710,71 @@
         }
 
         @keyframes formFromLeft {
-            from { opacity: 0; transform: translateX(-22px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(-22px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         @keyframes formFromRight {
-            from { opacity: 0; transform: translateX(22px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(22px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
-        #loginForm:not(.hidden) > .form-grid > *,
-        #registerForm:not(.hidden) > .form-grid > *,
-        #loginForm:not(.hidden) > .btn-row,
-        #registerForm:not(.hidden) > .btn-row {
+        #loginForm:not(.hidden)>.form-grid>*,
+        #registerForm:not(.hidden)>.form-grid>*,
+        #loginForm:not(.hidden)>.btn-row,
+        #registerForm:not(.hidden)>.btn-row {
             animation: riseIn .5s cubic-bezier(.2, .8, .2, 1) backwards;
         }
 
-        #authCard .form-grid > *:nth-child(1) { animation-delay: .08s; }
-        #authCard .form-grid > *:nth-child(2) { animation-delay: .13s; }
-        #authCard .form-grid > *:nth-child(3) { animation-delay: .18s; }
-        #authCard .form-grid > *:nth-child(4) { animation-delay: .23s; }
-        #authCard .form-grid > *:nth-child(5) { animation-delay: .28s; }
-        #authCard .form-grid > *:nth-child(6) { animation-delay: .32s; }
-        #authCard .form-grid > *:nth-child(n+7) { animation-delay: .36s; }
-        #loginForm:not(.hidden) > .btn-row { animation-delay: .2s; }
-        #registerForm:not(.hidden) > .btn-row { animation-delay: .42s; }
+        #authCard .form-grid>*:nth-child(1) {
+            animation-delay: .08s;
+        }
+
+        #authCard .form-grid>*:nth-child(2) {
+            animation-delay: .13s;
+        }
+
+        #authCard .form-grid>*:nth-child(3) {
+            animation-delay: .18s;
+        }
+
+        #authCard .form-grid>*:nth-child(4) {
+            animation-delay: .23s;
+        }
+
+        #authCard .form-grid>*:nth-child(5) {
+            animation-delay: .28s;
+        }
+
+        #authCard .form-grid>*:nth-child(6) {
+            animation-delay: .32s;
+        }
+
+        #authCard .form-grid>*:nth-child(n+7) {
+            animation-delay: .36s;
+        }
+
+        #loginForm:not(.hidden)>.btn-row {
+            animation-delay: .2s;
+        }
+
+        #registerForm:not(.hidden)>.btn-row {
+            animation-delay: .42s;
+        }
 
         /* ---- fields: the label lights up and nudges when its box is active ---- */
         #authCard label {
@@ -2476,7 +2782,7 @@
             transform-origin: left center;
         }
 
-        #authCard .form-grid > div:focus-within > label {
+        #authCard .form-grid>div:focus-within>label {
             color: var(--amber-deep);
             transform: translateX(3px);
             letter-spacing: 0.08em;
@@ -2504,8 +2810,13 @@
         }
 
         @keyframes codePulse {
-            0% { box-shadow: 0 0 0 0 rgba(232, 163, 61, 0.45); }
-            100% { box-shadow: 0 0 0 14px rgba(232, 163, 61, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(232, 163, 61, 0.45);
+            }
+
+            100% {
+                box-shadow: 0 0 0 14px rgba(232, 163, 61, 0);
+            }
         }
 
         /* ---- main buttons: a sheen sweeps across on hover; breathing while busy ---- */
@@ -2540,7 +2851,9 @@
         }
 
         @keyframes sheen {
-            to { left: 130%; }
+            to {
+                left: 130%;
+            }
         }
 
         #authCard button:disabled {
@@ -2548,8 +2861,15 @@
         }
 
         @keyframes busyBreath {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .6; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .6;
+            }
         }
 
         .pw-toggle {
@@ -2572,10 +2892,27 @@
         }
 
         @keyframes errShake {
-            10%, 90% { transform: translateX(-1px); }
-            20%, 80% { transform: translateX(3px); }
-            30%, 50%, 70% { transform: translateX(-5px); }
-            40%, 60% { transform: translateX(5px); }
+
+            10%,
+            90% {
+                transform: translateX(-1px);
+            }
+
+            20%,
+            80% {
+                transform: translateX(3px);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translateX(-5px);
+            }
+
+            40%,
+            60% {
+                transform: translateX(5px);
+            }
         }
 
         .error:not(:empty) {
@@ -2590,7 +2927,10 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
+
+            *,
+            *::before,
+            *::after {
                 animation-duration: .01ms !important;
                 animation-delay: 0s !important;
                 animation-iteration-count: 1 !important;
@@ -2641,7 +2981,8 @@
             <div style="display:flex;flex-direction:column;align-items:center;padding:20px 0;">
                 <span class="spinner-lg"></span>
                 <div class="status" style="margin:14px 0 0;">Signing you in...</div>
-                <div class="slow-conn-note hidden" id="sessionRestoreSlowNote">This is taking longer than usual — check your internet connection.</div>
+                <div class="slow-conn-note hidden" id="sessionRestoreSlowNote">This is taking longer than usual — check
+                    your internet connection.</div>
             </div>
         </div>
 
@@ -2654,9 +2995,11 @@
 
             <div id="registerForm">
                 <div class="form-grid">
-                    <div><label>Full name</label><input type="text" id="regName" autocomplete="off" placeholder="BITS registered name">
+                    <div><label>Full name</label><input type="text" id="regName" autocomplete="off"
+                            placeholder="BITS registered name">
                     </div>
-                    <div><label>College email</label><input type="email" id="regEmail" autocomplete="off" placeholder="you@college.edu">
+                    <div><label>College email</label><input type="email" id="regEmail" autocomplete="off"
+                            placeholder="you@college.edu">
                     </div>
                     <div class="full"><label>Program</label>
                         <select id="regProgram">
@@ -2716,14 +3059,18 @@
                     <div class="full" id="customFieldsWrap"></div>
                     <div><label>Password</label>
                         <div class="pw-wrap">
-                            <input type="password" id="regPassword" autocomplete="new-password" placeholder="At least 6 characters">
-                            <button type="button" class="pw-toggle" data-target="regPassword" aria-label="Show password">👁</button>
+                            <input type="password" id="regPassword" autocomplete="new-password"
+                                placeholder="At least 6 characters">
+                            <button type="button" class="pw-toggle" data-target="regPassword"
+                                aria-label="Show password">👁</button>
                         </div>
                     </div>
                     <div><label>Confirm password</label>
                         <div class="pw-wrap">
-                            <input type="password" id="regPassword2" autocomplete="new-password" placeholder="Re-enter password">
-                            <button type="button" class="pw-toggle" data-target="regPassword2" aria-label="Show password">👁</button>
+                            <input type="password" id="regPassword2" autocomplete="new-password"
+                                placeholder="Re-enter password">
+                            <button type="button" class="pw-toggle" data-target="regPassword2"
+                                aria-label="Show password">👁</button>
                         </div>
                     </div>
                 </div>
@@ -2734,19 +3081,22 @@
                     <div class="sub" style="font-size:12px; margin-bottom:8px;">
                         A 6-digit code was sent to your BITS email — enter it to finish creating your account.
                     </div>
-                    <input type="text" id="registerCodeInput" autocomplete="one-time-code" placeholder="6-digit code" maxlength="6" inputmode="numeric">
+                    <input type="text" id="registerCodeInput" autocomplete="one-time-code" placeholder="6-digit code"
+                        maxlength="6" inputmode="numeric">
                     <div class="btn-row"><button id="confirmRegisterBtn">Confirm &amp; create account</button></div>
                 </div>
             </div>
 
             <div id="loginForm" class="hidden">
                 <div class="form-grid">
-                    <div><label>BITS Email</label><input type="email" id="loginBitsId" placeholder="you@pilani.bits-pilani.ac.in">
+                    <div><label>BITS Email</label><input type="email" id="loginBitsId"
+                            placeholder="you@pilani.bits-pilani.ac.in">
                     </div>
                     <div><label>Password</label>
                         <div class="pw-wrap">
                             <input type="password" id="loginPassword" placeholder="Your password">
-                            <button type="button" class="pw-toggle" data-target="loginPassword" aria-label="Show password">👁</button>
+                            <button type="button" class="pw-toggle" data-target="loginPassword"
+                                aria-label="Show password">👁</button>
                         </div>
                     </div>
                 </div>
@@ -2760,20 +3110,25 @@
                     <div class="sub" style="font-size:12px; margin-bottom:8px;">
                         A 6-digit code will be emailed to the BITS address typed above.
                     </div>
-                    <div class="btn-row" style="margin-top:0;"><button type="button" id="resetSendBtn" class="ghost">Email me a code</button></div>
+                    <div class="btn-row" style="margin-top:0;"><button type="button" id="resetSendBtn"
+                            class="ghost">Email me a code</button></div>
                     <div id="resetStep2" class="hidden">
                         <label>Code</label>
-                        <input type="text" id="resetCodeInput" autocomplete="one-time-code" placeholder="6-digit code" maxlength="6" inputmode="numeric">
+                        <input type="text" id="resetCodeInput" autocomplete="one-time-code" placeholder="6-digit code"
+                            maxlength="6" inputmode="numeric">
                         <label>New password</label>
-                        <input type="password" id="resetNewPassword" autocomplete="new-password" placeholder="At least 6 characters">
+                        <input type="password" id="resetNewPassword" autocomplete="new-password"
+                            placeholder="At least 6 characters">
                         <div class="btn-row"><button type="button" id="resetConfirmBtn">Set new password</button></div>
                     </div>
                 </div>
 
                 <div id="adminOtpPanel" class="hidden" style="margin-top:16px;">
                     <label>Admin sign-in code</label>
-                    <div class="sub" id="adminOtpHint" style="font-size:12px; margin-bottom:8px;">A 6-digit code was emailed to you.</div>
-                    <input type="text" id="adminOtpInput" autocomplete="one-time-code" placeholder="6-digit code" maxlength="6" inputmode="numeric">
+                    <div class="sub" id="adminOtpHint" style="font-size:12px; margin-bottom:8px;">A 6-digit code was
+                        emailed to you.</div>
+                    <input type="text" id="adminOtpInput" autocomplete="one-time-code" placeholder="6-digit code"
+                        maxlength="6" inputmode="numeric">
                     <div class="btn-row"><button id="adminOtpSubmitBtn">Verify</button></div>
                 </div>
             </div>
@@ -2787,7 +3142,8 @@
             <div class="gen-tt-row">
                 <div>
                     <label style="margin-bottom:4px;">Your timetable calendar file (.ics)</label>
-                    <div class="sub" style="margin:0; font-size:13px;">No file yet? Make your timetable on the DVM site first.</div>
+                    <div class="sub" style="margin:0; font-size:13px;">No file yet? Make your timetable on the DVM site
+                        first.</div>
                 </div>
                 <button type="button" id="generateTtBtn">Generate timetable ↗</button>
             </div>
@@ -2800,7 +3156,8 @@
                         <li>On that site, click <b>Export</b> and download the <b>.ics</b> file.</li>
                         <li>Come back here and upload that .ics file.</li>
                     </ol>
-                    <div class="dropzone-sub">Courses, class times, rooms and instructors are read straight from it</div>
+                    <div class="dropzone-sub">Courses, class times, rooms and instructors are read straight from it
+                    </div>
                 </div>
                 <div id="dropzonePreviewGrid" class="hidden dropzone-preview-grid"></div>
             </div>
@@ -2831,7 +3188,8 @@
         <!-- STEP 3: REVIEW -->
         <div class="card hidden" data-step="03 — Review" id="reviewCard">
             <div class="review-head">
-                <div class="sub" style="margin:0;">This is exactly what your calendar file says. If it looks right, confirm. If something is off, export the .ics again and re-upload.</div>
+                <div class="sub" style="margin:0;">This is exactly what your calendar file says. If it looks right,
+                    confirm. If something is off, export the .ics again and re-upload.</div>
                 <div class="btn-row" style="margin-top:0;">
                     <button id="reviewReuploadBtn" class="ghost">Re-upload</button>
                     <button id="confirmBtn">Confirm and save</button>
@@ -2847,7 +3205,8 @@
         <div class="card hidden" data-step="04 — Your timetable" id="ttCard">
             <div class="sub" style="margin-bottom:16px;">Click any class to see who else is in it.</div>
             <div class="tt-scroll" id="ttGrid"></div>
-            <div class="btn-row" style="margin-top:20px;"><button id="enterDashboardBtn">Enter dashboard →</button></div>
+            <div class="btn-row" style="margin-top:20px;"><button id="enterDashboardBtn">Enter dashboard →</button>
+            </div>
         </div>
 
         <!-- DASHBOARD -->
@@ -2862,7 +3221,8 @@
                     <button data-panel="panelViewInterest"><span class="nav-icon">☰</span>View interest</button>
                     <button data-panel="panelFavorites"><span class="nav-icon">★</span>Favourite interest</button>
                     <button data-panel="panelGoing"><span class="nav-icon">✈</span>Going</button>
-                    <button data-panel="panelMessages"><span class="nav-icon">▭</span>Messages<span class="nav-badge hidden" id="msgNavBadge">0</span></button>
+                    <button data-panel="panelMessages"><span class="nav-icon">▭</span>Messages<span
+                            class="nav-badge hidden" id="msgNavBadge">0</span></button>
                     <button data-panel="panelFeedback"><span class="nav-icon">✉</span>Feedback</button>
                 </nav>
 
@@ -2870,15 +3230,18 @@
                     <!-- HOME -->
                     <div class="dash-panel active" id="panelHome">
                         <div class="card home-sticky-top" data-step="Home">
-                            <a href="https://bitscompass-one.vercel.app/" target="_blank" rel="noopener noreferrer" class="external-tool-card">
+                            <a href="https://bitscompass-one.vercel.app/" target="_blank" rel="noopener noreferrer"
+                                class="external-tool-card">
                                 <div>
                                     <div class="etc-title">🧭 Find a free room right now</div>
-                                    <div class="etc-sub">BITSCompass — live room availability across campus, made by Anant Gupta</div>
+                                    <div class="etc-sub">BITSCompass — live room availability across campus, made by
+                                        Anant Gupta</div>
                                 </div>
                                 <span class="etc-arrow">↗</span>
                             </a>
                             <div class="filter-row">
-                                <input type="text" id="homeSearch" placeholder="Search by name" style="max-width:220px;">
+                                <input type="text" id="homeSearch" placeholder="Search by name"
+                                    style="max-width:220px;">
                                 <select id="homeFilterProgram">
                                     <option value="">All programs</option>
                                     <option value="A1">A1 — B.E. Chemical</option>
@@ -2929,12 +3292,16 @@
                             <h1 style="font-size:22px;" id="profSelfName"></h1>
                             <div class="sub" id="profSelfMeta" style="margin-bottom:6px;"></div>
                             <div class="form-grid">
-                                <div><label>Club joined</label><input type="text" id="profClub" placeholder="e.g. Robotics Club"></div>
-                                <div><label>Sports</label><input type="text" id="profSport" placeholder="e.g. Badminton"></div>
-                                <div class="full"><label>Field of interest</label><input type="text" id="profInterest" placeholder="e.g. Machine learning, Photography"></div>
+                                <div><label>Club joined</label><input type="text" id="profClub"
+                                        placeholder="e.g. Robotics Club"></div>
+                                <div><label>Sports</label><input type="text" id="profSport"
+                                        placeholder="e.g. Badminton"></div>
+                                <div class="full"><label>Field of interest</label><input type="text" id="profInterest"
+                                        placeholder="e.g. Machine learning, Photography"></div>
                             </div>
                             <div class="toggle-row">
-                                <label class="switch"><input type="checkbox" id="profVisibilityToggle"><span class="slider"></span></label>
+                                <label class="switch"><input type="checkbox" id="profVisibilityToggle"><span
+                                        class="slider"></span></label>
                                 <span class="toggle-label" id="profVisibilityLabel">Timetable is private</span>
                             </div>
                             <div class="btn-row"><button id="saveProfileBtn">Save profile</button></div>
@@ -2969,19 +3336,30 @@
                                 </div>
                                 <div><label>Year / Semester</label>
                                     <select id="idSemester">
-                                        <option value="1st Year - Semester 1" data-year="1">1st Year (Semester 1)</option>
-                                        <option value="1st Year - Semester 2" data-year="1">1st Year (Semester 2)</option>
-                                        <option value="2nd Year - Semester 3" data-year="2">2nd Year (Semester 3)</option>
-                                        <option value="2nd Year - Semester 4" data-year="2">2nd Year (Semester 4)</option>
-                                        <option value="3rd Year - Semester 5" data-year="3">3rd Year (Semester 5)</option>
-                                        <option value="3rd Year - Semester 6" data-year="3">3rd Year (Semester 6)</option>
-                                        <option value="4th Year - Semester 7" data-year="4">4th Year (Semester 7)</option>
-                                        <option value="4th Year - Semester 8" data-year="4">4th Year (Semester 8)</option>
-                                        <option value="5th Year - Semester 9" data-year="5">5th Year (Semester 9)</option>
-                                        <option value="5th Year - Semester 10" data-year="5">5th Year (Semester 10)</option>
+                                        <option value="1st Year - Semester 1" data-year="1">1st Year (Semester 1)
+                                        </option>
+                                        <option value="1st Year - Semester 2" data-year="1">1st Year (Semester 2)
+                                        </option>
+                                        <option value="2nd Year - Semester 3" data-year="2">2nd Year (Semester 3)
+                                        </option>
+                                        <option value="2nd Year - Semester 4" data-year="2">2nd Year (Semester 4)
+                                        </option>
+                                        <option value="3rd Year - Semester 5" data-year="3">3rd Year (Semester 5)
+                                        </option>
+                                        <option value="3rd Year - Semester 6" data-year="3">3rd Year (Semester 6)
+                                        </option>
+                                        <option value="4th Year - Semester 7" data-year="4">4th Year (Semester 7)
+                                        </option>
+                                        <option value="4th Year - Semester 8" data-year="4">4th Year (Semester 8)
+                                        </option>
+                                        <option value="5th Year - Semester 9" data-year="5">5th Year (Semester 9)
+                                        </option>
+                                        <option value="5th Year - Semester 10" data-year="5">5th Year (Semester 10)
+                                        </option>
                                     </select>
                                 </div>
-                                <div class="full hidden" id="idBeProgramWrap"><label>B.E. Program (for your dual degree)</label>
+                                <div class="full hidden" id="idBeProgramWrap"><label>B.E. Program (for your dual
+                                        degree)</label>
                                     <select id="idBeProgram">
                                         <option value="">Select B.E. program</option>
                                         <option value="A1">A1 — B.E. Chemical</option>
@@ -3011,10 +3389,12 @@
                             <div id="curriculumRefWrap" style="display:none;"></div>
 
                             <label style="margin-top:26px;">Timetable</label>
-                            <div class="sub" style="margin-bottom:10px;">Your timetable comes straight from your calendar file. To change it, upload a new .ics file.</div>
+                            <div class="sub" style="margin-bottom:10px;">Your timetable comes straight from your
+                                calendar file. To change it, upload a new .ics file.</div>
                             <div class="btn-row">
                                 <button id="reuploadBtn" class="ghost">Upload a new .ics file</button>
-                                <button id="openBuildBtn" class="ghost" style="display:none;">Build from real sections</button>
+                                <button id="openBuildBtn" class="ghost" style="display:none;">Build from real
+                                    sections</button>
                             </div>
 
                             <label style="margin-top:26px;">Your posts</label>
@@ -3026,7 +3406,8 @@
                             <div class="empty-note hidden" id="ownTripsEmpty">Not going anywhere right now.</div>
 
                             <label style="margin-top:26px;">Session</label>
-                            <div class="sub" style="margin-bottom:10px;">Log out of this browser. You'll need your email and password to log back in.</div>
+                            <div class="sub" style="margin-bottom:10px;">Log out of this browser. You'll need your email
+                                and password to log back in.</div>
                             <div class="btn-row"><button id="logoutBtn" class="ghost">Log out</button></div>
                         </div>
                     </div>
@@ -3036,7 +3417,8 @@
                         <div class="card" data-step="Timetable">
                             <div class="sub" style="margin-bottom:16px;">Click any class to see who else is in it.</div>
                             <div class="tt-scroll" id="dashTtGrid"></div>
-                            <div id="timetableMatchesSection" class="hidden" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--line);">
+                            <div id="timetableMatchesSection" class="hidden"
+                                style="margin-top:20px; padding-top:20px; border-top:1px solid var(--line);">
                                 <div class="sub" style="margin-bottom:10px;" id="timetableMatchesTitle"></div>
                                 <div id="timetableMatchesList"></div>
                             </div>
@@ -3047,13 +3429,16 @@
                     <div class="dash-panel" id="panelPostInterest">
                         <div class="card" data-step="Post interest">
                             <h1 style="font-size:20px;">Share something</h1>
-                            <div class="sub" style="margin-bottom:10px;">A short post your batch can see — a project you're looking for teammates on, an event, anything.</div>
+                            <div class="sub" style="margin-bottom:10px;">A short post your batch can see — a project
+                                you're looking for teammates on, an event, anything.</div>
                             <textarea id="postContent" placeholder="What's on your mind?"></textarea>
                             <div class="toggle-row">
-                                <label class="switch"><input type="checkbox" id="postVisibilityToggle" checked><span class="slider"></span></label>
+                                <label class="switch"><input type="checkbox" id="postVisibilityToggle" checked><span
+                                        class="slider"></span></label>
                                 <span class="toggle-label" id="postVisibilityLabel">Public — anyone can see this</span>
                             </div>
-                            <div class="btn-row" style="justify-content:flex-end;"><button id="submitPostBtn">Post</button></div>
+                            <div class="btn-row" style="justify-content:flex-end;"><button
+                                    id="submitPostBtn">Post</button></div>
                             <div class="status" id="postStatus"></div>
                         </div>
                     </div>
@@ -3062,7 +3447,8 @@
                     <div class="dash-panel" id="panelViewInterest">
                         <div class="card" data-step="View interest">
                             <div id="interestFeed"></div>
-                            <div class="empty-note hidden" id="interestEmpty">No posts yet — be the first to share something.</div>
+                            <div class="empty-note hidden" id="interestEmpty">No posts yet — be the first to share
+                                something.</div>
                         </div>
                     </div>
 
@@ -3070,7 +3456,8 @@
                     <div class="dash-panel" id="panelFavorites">
                         <div class="card" data-step="Favourite interest">
                             <div id="favoriteFeed"></div>
-                            <div class="empty-note hidden" id="favoriteEmpty">You haven't favourited any posts yet.</div>
+                            <div class="empty-note hidden" id="favoriteEmpty">You haven't favourited any posts yet.
+                            </div>
                         </div>
                     </div>
 
@@ -3078,12 +3465,17 @@
                     <div class="dash-panel" id="panelGoing">
                         <div class="card" data-step="Going">
                             <h1 style="font-size:20px;">Going somewhere?</h1>
-                            <div class="sub" style="margin-bottom:14px;">Post where you're headed — others can request to join, and you approve who comes.</div>
+                            <div class="sub" style="margin-bottom:14px;">Post where you're headed — others can request
+                                to join, and you approve who comes.</div>
                             <div class="form-grid" style="max-width:480px;">
-                                <div class="full"><label>Destination</label><input type="text" id="tripDestination" placeholder="e.g. Jaipur railway station"></div>
-                                <div class="full"><label>When</label><input type="text" id="tripDateTime" placeholder="e.g. Friday 5pm"></div>
-                                <div class="full"><label>Details</label><input type="text" id="tripDetails" placeholder="Any other info"></div>
-                                <div class="full"><label>Maximum people allowed</label><input type="text" id="tripMaxPeople" placeholder="e.g. 4" inputmode="numeric"></div>
+                                <div class="full"><label>Destination</label><input type="text" id="tripDestination"
+                                        placeholder="e.g. Jaipur railway station"></div>
+                                <div class="full"><label>When</label><input type="text" id="tripDateTime"
+                                        placeholder="e.g. Friday 5pm"></div>
+                                <div class="full"><label>Details</label><input type="text" id="tripDetails"
+                                        placeholder="Any other info"></div>
+                                <div class="full"><label>Maximum people allowed</label><input type="text"
+                                        id="tripMaxPeople" placeholder="e.g. 4" inputmode="numeric"></div>
                             </div>
                             <div class="btn-row"><button id="postTripBtn">Post</button></div>
                             <div class="status" id="tripStatus"></div>
@@ -3099,7 +3491,8 @@
                         <div class="card" data-step="Messages">
                             <div id="msgListView">
                                 <h1 style="font-size:20px;">Messages</h1>
-                                <div class="sub" style="margin-bottom:14px;">Chats with classmates you found here. Open anyone's profile to start a new one.</div>
+                                <div class="sub" style="margin-bottom:14px;">Chats with classmates you found here. Open
+                                    anyone's profile to start a new one.</div>
                                 <div id="convListWrap"></div>
                             </div>
 
@@ -3111,7 +3504,8 @@
                                 <div class="sub" style="margin-bottom:14px;" id="chatWithEmail"></div>
                                 <div class="chat-scroll" id="chatScroll"></div>
                                 <textarea id="chatInput" placeholder="Write a message..." maxlength="1000"></textarea>
-                                <div class="btn-row" style="justify-content:flex-end;"><button id="chatSendBtn">Send</button></div>
+                                <div class="btn-row" style="justify-content:flex-end;"><button
+                                        id="chatSendBtn">Send</button></div>
                                 <div class="status" id="chatStatus"></div>
                             </div>
                         </div>
@@ -3120,9 +3514,11 @@
                     <div class="dash-panel" id="panelFeedback">
                         <div class="card" data-step="Feedback">
                             <h1 style="font-size:20px;">Feedback</h1>
-                            <div class="sub" style="margin-bottom:10px;">Found a bug, or have an idea to make this better? Tell us.</div>
+                            <div class="sub" style="margin-bottom:10px;">Found a bug, or have an idea to make this
+                                better? Tell us.</div>
                             <textarea id="feedbackContent" placeholder="Your feedback..."></textarea>
-                            <div class="btn-row" style="justify-content:flex-end;"><button id="submitFeedbackBtn">Send feedback</button></div>
+                            <div class="btn-row" style="justify-content:flex-end;"><button id="submitFeedbackBtn">Send
+                                    feedback</button></div>
                             <div class="status" id="feedbackStatus"></div>
                         </div>
                     </div>
@@ -3135,13 +3531,16 @@
             <div class="dashboard-shell">
                 <nav class="dash-nav" id="adminDashNav">
                     <div class="dash-nav-label" style="padding-left:12px; margin-bottom:2px;">Admin</div>
-                    <button data-admin-panel="panelAdminOverview" class="active"><span class="nav-icon">◱</span>Overview</button>
+                    <button data-admin-panel="panelAdminOverview" class="active"><span
+                            class="nav-icon">◱</span>Overview</button>
                     <button data-admin-panel="panelAdminUsers"><span class="nav-icon">◐</span>Users</button>
                     <button data-admin-panel="panelAdminPosts"><span class="nav-icon">✎</span>Posts</button>
                     <button data-admin-panel="panelAdminFeedback"><span class="nav-icon">✉</span>Feedback</button>
-                    <button data-admin-panel="panelAdminFormFields"><span class="nav-icon">▦</span>Register form</button>
+                    <button data-admin-panel="panelAdminFormFields"><span class="nav-icon">▦</span>Register
+                        form</button>
                     <button data-admin-panel="panelAdminNotify"><span class="nav-icon">✉</span>Notify</button>
-                    <button data-admin-panel="panelAdminCatalog" style="display:none;"><span class="nav-icon">▤</span>Catalog</button>
+                    <button data-admin-panel="panelAdminCatalog" style="display:none;"><span
+                            class="nav-icon">▤</span>Catalog</button>
                     <div class="dash-nav-divider">
                         <button id="exitAdminBtn"><span class="nav-icon">←</span>Exit admin</button>
                     </div>
@@ -3153,7 +3552,8 @@
                             <div class="admin-header">
                                 <div>
                                     <h1>◱ Overview <span class="admin-badge">Restricted</span></h1>
-                                    <div class="sub" style="max-width:640px;">Snapshot of users, posts, and feedback.</div>
+                                    <div class="sub" style="max-width:640px;">Snapshot of users, posts, and feedback.
+                                    </div>
                                 </div>
                             </div>
                             <div class="admin-section">
@@ -3162,15 +3562,29 @@
                                     <button id="adminOverviewRefreshBtn" class="ghost">Refresh</button>
                                 </div>
                                 <div class="admin-stat-grid" id="adminStatGrid">
-                                    <div class="admin-stat-card"><div class="admin-stat-value" id="statTotalUsers">—</div><div class="admin-stat-label">Total users</div></div>
-                                    <div class="admin-stat-card"><div class="admin-stat-value" id="statActiveUsers">—</div><div class="admin-stat-label">Active now</div></div>
-                                    <div class="admin-stat-card"><div class="admin-stat-value" id="statTotalPosts">—</div><div class="admin-stat-label">Total posts</div></div>
-                                    <div class="admin-stat-card"><div class="admin-stat-value" id="statTotalFeedback">—</div><div class="admin-stat-label">Total feedback</div></div>
+                                    <div class="admin-stat-card">
+                                        <div class="admin-stat-value" id="statTotalUsers">—</div>
+                                        <div class="admin-stat-label">Total users</div>
+                                    </div>
+                                    <div class="admin-stat-card">
+                                        <div class="admin-stat-value" id="statActiveUsers">—</div>
+                                        <div class="admin-stat-label">Active now</div>
+                                    </div>
+                                    <div class="admin-stat-card">
+                                        <div class="admin-stat-value" id="statTotalPosts">—</div>
+                                        <div class="admin-stat-label">Total posts</div>
+                                    </div>
+                                    <div class="admin-stat-card">
+                                        <div class="admin-stat-value" id="statTotalFeedback">—</div>
+                                        <div class="admin-stat-label">Total feedback</div>
+                                    </div>
                                 </div>
-                                <div class="sub" id="adminOverviewNote" style="margin-top:14px; font-size:12.5px;"></div>
+                                <div class="sub" id="adminOverviewNote" style="margin-top:14px; font-size:12.5px;">
+                                </div>
                             </div>
 
-                            <div class="admin-section" style="margin-top:26px; padding-top:20px; border-top:1px solid var(--line);">
+                            <div class="admin-section"
+                                style="margin-top:26px; padding-top:20px; border-top:1px solid var(--line);">
                                 <div class="admin-section-head">
                                     <span class="admin-section-title">Recent admin login attempts</span>
                                     <button id="adminAttemptsRefreshBtn" class="ghost">Refresh</button>
@@ -3183,11 +3597,21 @@
                                 </div>
                                 <div class="table-scroll">
                                     <table>
-                                        <thead><tr><th>When</th><th>Code entered</th><th>Result</th><th>Device</th><th>Screen</th><th>Location</th></tr></thead>
+                                        <thead>
+                                            <tr>
+                                                <th>When</th>
+                                                <th>Code entered</th>
+                                                <th>Result</th>
+                                                <th>Device</th>
+                                                <th>Screen</th>
+                                                <th>Location</th>
+                                            </tr>
+                                        </thead>
                                         <tbody id="adminAttemptsBody"></tbody>
                                     </table>
                                 </div>
-                                <div class="admin-empty-state hidden" id="adminAttemptsEmpty">No attempts logged yet.</div>
+                                <div class="admin-empty-state hidden" id="adminAttemptsEmpty">No attempts logged yet.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3198,7 +3622,8 @@
                             <div class="admin-header">
                                 <div>
                                     <h1>◐ Users <span class="admin-badge">Restricted</span></h1>
-                                    <div class="sub" style="max-width:640px;">View, edit, or delete any registered student.</div>
+                                    <div class="sub" style="max-width:640px;">View, edit, or delete any registered
+                                        student.</div>
                                 </div>
                             </div>
                             <div class="admin-section">
@@ -3207,12 +3632,20 @@
                                     <button id="adminUsersRefreshBtn" class="ghost">Refresh</button>
                                 </div>
                                 <div class="filter-row" style="margin-top:10px;">
-                                    <input type="text" id="adminUserSearch" placeholder="Search name or program" style="max-width:280px;">
+                                    <input type="text" id="adminUserSearch" placeholder="Search name or program"
+                                        style="max-width:280px;">
                                 </div>
                                 <div class="table-scroll" style="margin-top:12px;">
                                     <table>
                                         <thead>
-                                            <tr><th>Name</th><th>Program</th><th>Semester</th><th>Timetable</th><th>Last active</th><th></th></tr>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Program</th>
+                                                <th>Semester</th>
+                                                <th>Timetable</th>
+                                                <th>Last active</th>
+                                                <th></th>
+                                            </tr>
                                         </thead>
                                         <tbody id="adminUsersBody"></tbody>
                                     </table>
@@ -3228,7 +3661,8 @@
                             <div class="admin-header">
                                 <div>
                                     <h1>✎ Posts <span class="admin-badge">Restricted</span></h1>
-                                    <div class="sub" style="max-width:640px;">Every interest post across all users.</div>
+                                    <div class="sub" style="max-width:640px;">Every interest post across all users.
+                                    </div>
                                 </div>
                             </div>
                             <div class="admin-section">
@@ -3248,7 +3682,8 @@
                             <div class="admin-header">
                                 <div>
                                     <h1>✉ Feedback <span class="admin-badge">Restricted</span></h1>
-                                    <div class="sub" style="max-width:640px;">Every feedback submission, with the ability to remove any.</div>
+                                    <div class="sub" style="max-width:640px;">Every feedback submission, with the
+                                        ability to remove any.</div>
                                 </div>
                             </div>
                             <div class="admin-section">
@@ -3257,7 +3692,8 @@
                                     <button id="adminFeedbackRefreshBtn" class="ghost">Refresh</button>
                                 </div>
                                 <div id="adminFeedbackFeed" style="margin-top:12px;"></div>
-                                <div class="admin-empty-state hidden" id="adminFeedbackEmpty">No feedback submitted yet.</div>
+                                <div class="admin-empty-state hidden" id="adminFeedbackEmpty">No feedback submitted yet.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3268,7 +3704,8 @@
                             <div class="admin-header">
                                 <div>
                                     <h1>▦ Register form <span class="admin-badge">Restricted</span></h1>
-                                    <div class="sub" style="max-width:640px;">Add or remove custom fields shown on the Register form.</div>
+                                    <div class="sub" style="max-width:640px;">Add or remove custom fields shown on the
+                                        Register form.</div>
                                 </div>
                             </div>
                             <div class="admin-section">
@@ -3280,9 +3717,11 @@
                                     answers are collected alongside the built-in fields when someone signs up.
                                 </div>
                                 <div id="adminFormFieldsList"></div>
-                                <div class="admin-empty-state hidden" id="adminFormFieldsEmpty">No custom fields yet.</div>
+                                <div class="admin-empty-state hidden" id="adminFormFieldsEmpty">No custom fields yet.
+                                </div>
                             </div>
-                            <div class="admin-section" style="margin-top:26px; padding-top:20px; border-top:1px solid var(--line);">
+                            <div class="admin-section"
+                                style="margin-top:26px; padding-top:20px; border-top:1px solid var(--line);">
                                 <div class="admin-section-title" style="margin-bottom:12px;">Add a field</div>
                                 <div class="form-grid" style="max-width:420px;">
                                     <input type="text" id="newFieldLabel" placeholder="Field label, e.g. Hostel">
@@ -3291,7 +3730,8 @@
                                         <option value="select">Dropdown</option>
                                     </select>
                                     <div class="full hidden" id="newFieldOptionsWrap">
-                                        <input type="text" id="newFieldOptions" placeholder="Dropdown options, comma-separated">
+                                        <input type="text" id="newFieldOptions"
+                                            placeholder="Dropdown options, comma-separated">
                                     </div>
                                 </div>
                                 <div class="btn-row"><button id="adminAddFieldBtn">Add field</button></div>
@@ -3305,7 +3745,9 @@
                             <div class="admin-header">
                                 <div>
                                     <h1>✉ Notify <span class="admin-badge">Restricted</span></h1>
-                                    <div class="sub" style="max-width:640px;">Send a message to EVERYONE — it shows up as a banner the next time each student visits the site. To message one specific student instead, use "Manage" on their entry in the Users page.</div>
+                                    <div class="sub" style="max-width:640px;">Send a message to EVERYONE — it shows up
+                                        as a banner the next time each student visits the site. To message one specific
+                                        student instead, use "Manage" on their entry in the Users page.</div>
                                 </div>
                             </div>
                             <div class="admin-section">
@@ -3313,7 +3755,8 @@
                                 <div class="form-grid">
                                     <div class="full">
                                         <label>Message</label>
-                                        <input type="text" id="notifyMessage" placeholder="e.g. Timetable upload will be down for maintenance tonight.">
+                                        <input type="text" id="notifyMessage"
+                                            placeholder="e.g. Timetable upload will be down for maintenance tonight.">
                                     </div>
                                 </div>
                                 <div class="btn-row"><button id="sendNotifyBtn">Send to all</button></div>
@@ -3347,12 +3790,15 @@
                                     "code"/"title"). Importing REPLACES the entire catalog, it doesn't merge with what's
                                     already there.
                                 </div>
-                                <textarea id="catalogImportInput" rows="8" style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:12.5px; padding:10px; border:1px solid var(--line); border-radius:6px; box-sizing:border-box;" placeholder='[{"code": "MATH F101", "title": "MULTIVARIABLE CALCULUS"}, {"code": "CS F111", "title": "COMPUTER PROGRAMMING"}]'></textarea>
+                                <textarea id="catalogImportInput" rows="8"
+                                    style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:12.5px; padding:10px; border:1px solid var(--line); border-radius:6px; box-sizing:border-box;"
+                                    placeholder='[{"code": "MATH F101", "title": "MULTIVARIABLE CALCULUS"}, {"code": "CS F111", "title": "COMPUTER PROGRAMMING"}]'></textarea>
                                 <div class="btn-row"><button id="importCatalogBtn">Import</button></div>
                                 <div class="status" id="catalogImportStatus"></div>
                             </div>
 
-                            <div class="admin-section" style="margin-top:26px; padding-top:20px; border-top:1px solid var(--line);">
+                            <div class="admin-section"
+                                style="margin-top:26px; padding-top:20px; border-top:1px solid var(--line);">
                                 <div class="admin-section-head">
                                     <span class="admin-section-title">Standard courses by program &amp; semester</span>
                                     <span class="sub" id="curriculumCount" style="font-size:12.5px;"></span>
@@ -3364,12 +3810,15 @@
                                     pipe, semester number 1-10), each mapping to an array of course codes. Importing
                                     REPLACES everything.
                                 </div>
-                                <textarea id="curriculumImportInput" rows="6" style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:12.5px; padding:10px; border:1px solid var(--line); border-radius:6px; box-sizing:border-box;" placeholder='{"A7|1": ["CS U111", "MATH U101", "EEE U111"], "A3|2": ["BIO U101", "CHEM U101"]}'></textarea>
+                                <textarea id="curriculumImportInput" rows="6"
+                                    style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:12.5px; padding:10px; border:1px solid var(--line); border-radius:6px; box-sizing:border-box;"
+                                    placeholder='{"A7|1": ["CS U111", "MATH U101", "EEE U111"], "A3|2": ["BIO U101", "CHEM U101"]}'></textarea>
                                 <div class="btn-row"><button id="importCurriculumBtn">Import</button></div>
                                 <div class="status" id="curriculumImportStatus"></div>
                             </div>
 
-                            <div class="admin-section" style="margin-top:26px; padding-top:20px; border-top:1px solid var(--line);">
+                            <div class="admin-section"
+                                style="margin-top:26px; padding-top:20px; border-top:1px solid var(--line);">
                                 <div class="admin-section-head">
                                     <span class="admin-section-title">Section options (instructors, rooms)</span>
                                     <span class="sub" id="sectionCatalogCount" style="font-size:12.5px;"></span>
@@ -3382,7 +3831,9 @@
                                     practical: [...] } — same shape DVM's own data uses. Importing REPLACES
                                     everything.
                                 </div>
-                                <textarea id="sectionCatalogImportInput" rows="6" style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:12.5px; padding:10px; border:1px solid var(--line); border-radius:6px; box-sizing:border-box;" placeholder='[{"code": "MATH U101", "title": "MULTIVARIABLE CALCULUS", "lecture": [{"sec": "1", "instructors": ["HARI OM BANSAL"], "room": "5102"}], "tutorial": [], "practical": []}]'></textarea>
+                                <textarea id="sectionCatalogImportInput" rows="6"
+                                    style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:12.5px; padding:10px; border:1px solid var(--line); border-radius:6px; box-sizing:border-box;"
+                                    placeholder='[{"code": "MATH U101", "title": "MULTIVARIABLE CALCULUS", "lecture": [{"sec": "1", "instructors": ["HARI OM BANSAL"], "room": "5102"}], "tutorial": [], "practical": []}]'></textarea>
                                 <div class="btn-row"><button id="importSectionCatalogBtn">Import</button></div>
                                 <div class="status" id="sectionCatalogImportStatus"></div>
                             </div>
@@ -3392,8 +3843,32 @@
             </div>
         </div>
 
-        <footer>Built for you · your section data stays within your batch<br>by Saparia</footer>
+        <!-- Help / feedback: shown on sign-in, upload and review (hidden on the dashboard) -->
+        <div class="auth-help card" id="preDashHelp">
+            <span>Facing a problem? Call or WhatsApp <a href="tel:+917900791234">+91 7900791234</a></span>
+            <button type="button" class="ghost" id="authFeedbackBtn">Give feedback</button>
+        </div>
+
+        <footer>Built for you · your section data stays within your batch<br>by Saparia · Contact: <a
+                href="tel:+917900791234">+91 7900791234</a></footer>
     </main>
+
+    <div class="modal-overlay hidden" id="helpModal">
+        <div class="modal">
+            <button class="modal-close" id="closeHelp">&times;</button>
+            <h3>Give feedback</h3>
+            <div class="sub" style="font-size:13px; margin-bottom:10px;">
+                Tell us what went wrong or what could be better. It opens WhatsApp with your message
+                ready to send to +91 7900791234.
+            </div>
+            <textarea id="helpMessage" rows="5" maxlength="1000"
+                placeholder="Describe the problem or your suggestion..."></textarea>
+            <div class="help-actions">
+                <button type="button" id="helpWhatsAppBtn">Send on WhatsApp</button>
+                <a href="tel:+917900791234"><button type="button" class="ghost" tabindex="-1">Call instead</button></a>
+            </div>
+        </div>
+    </div>
 
     <div class="modal-overlay hidden" id="matchModal">
         <div class="modal">
@@ -3450,7 +3925,8 @@
             <div class="sub" id="adminUserMeta" style="margin:2px 0 16px;"></div>
 
             <label>Send message to this user</label>
-            <input type="text" id="adminUserMessageInput" placeholder="e.g. Please re-upload your timetable, it looks incomplete.">
+            <input type="text" id="adminUserMessageInput"
+                placeholder="e.g. Please re-upload your timetable, it looks incomplete.">
             <div class="btn-row"><button id="adminUserMessageBtn" class="ghost">Send</button></div>
             <div class="status" id="adminUserMessageStatus"></div>
 
@@ -3460,7 +3936,8 @@
             <label>Sport</label><input type="text" id="adminEditSport">
             <label>Field of interest</label><input type="text" id="adminEditInterest">
             <div class="toggle-row">
-                <label class="switch"><input type="checkbox" id="adminEditVisibility"><span class="slider"></span></label>
+                <label class="switch"><input type="checkbox" id="adminEditVisibility"><span
+                        class="slider"></span></label>
                 <span class="toggle-label" id="adminEditVisibilityLabel">Timetable is private</span>
             </div>
             <div class="btn-row"><button id="adminSaveUserBtn">Save changes</button></div>
@@ -3474,7 +3951,13 @@
             <label style="margin-top:22px;">Timetable</label>
             <div class="table-scroll">
                 <table>
-                    <thead><tr><th>Class</th><th>Day</th><th>Time</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Day</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
                     <tbody id="adminUserTimetableBody"></tbody>
                 </table>
             </div>
@@ -5206,7 +5689,7 @@
             const container = document.getElementById('reviewTtGrid');
             if (!container) return;
             // View only: the timetable is whatever the calendar file says.
-            renderTimetableInto(container, extracted, () => {});
+            renderTimetableInto(container, extracted, () => { });
         }
 
 
@@ -5620,6 +6103,30 @@
                 newBody.appendChild(tr);
             });
         }
+
+        // ---- Help / feedback from the sign-in screen ----
+        // Not signed in yet, so it can't go through submitFeedback (which
+        // needs a session); it hands the text to WhatsApp instead.
+        const HELP_WHATSAPP = '917900791234';
+        document.getElementById('authFeedbackBtn').onclick = () => {
+            document.getElementById('helpModal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('helpMessage').focus(), 50);
+        };
+        document.getElementById('closeHelp').onclick = () => closeModal(document.getElementById('helpModal'));
+        document.getElementById('helpModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal(e.currentTarget);
+        });
+        document.getElementById('helpWhatsAppBtn').onclick = () => {
+            const msg = document.getElementById('helpMessage').value.trim();
+            if (!msg) { toast('Write your feedback before sending.', 'error'); return; }
+            const text = 'Time Table Mash feedback:\n' + msg;
+            window.open('https://wa.me/' + HELP_WHATSAPP + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
+            document.getElementById('helpMessage').value = '';
+            closeModal(document.getElementById('helpModal'));
+        };
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal(document.getElementById('helpModal'));
+        });
 
         document.getElementById('closeMatch').onclick = () => closeModal(document.getElementById('matchModal'));
         document.getElementById('closeProfile').onclick = () => closeModal(document.getElementById('profileModal'));
